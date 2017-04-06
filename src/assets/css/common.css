@@ -1,0 +1,153 @@
+/*层级关系
+公共头部：3
+内容：1
+公共底部：3
+搜索栏：2
+全屏页：4
+*/
+
+#app {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#app .lock {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.outter {
+    transition: 0.5s;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    /*overflow: hidden;*/
+    /*bottom: 0;*/
+}
+
+
+.outter.hideLeft {
+    opacity: 0.75;
+    transform: translate3d(-100%, 0, 0);
+    transition: 1.0s;
+    overflow: hidden;
+}
+
+body {
+    background: #fbf9fe;
+}
+
+.app-header {
+    position: relative;
+    transition: 0.3s;
+    width: 100%;
+    z-index: 3;
+    height: 1rem;
+    text-align: center;
+}
+
+.app-header.header-hide {
+    margin-top: -45px;
+}
+
+.app-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1;
+    padding-bottom: 49px;
+    width: 100%;
+}
+
+.app-footer {
+    height: 1rem;
+}
+
+.app-footer:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    left: 0px;
+    top: 0;
+    transform: scale(.5);
+    transform-origin: 0 0;
+    -webkit-transform: scale(.5);
+    -webkit-transform-origin: 0 0;
+    background-color: #b7b7b7;
+    height: 1px;
+    z-index: 4;
+}
+
+.sub-page {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    background: #eee;
+    height: 100%;
+    width: 100%;
+    /* overflow: hidden; */
+    right: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.line-bottom:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    left: 8px;
+    top: 0;
+    transform: scale(.5);
+    transform-origin: 0 0;
+    -webkit-transform: scale(.5);
+    -webkit-transform-origin: 0 0;
+    background-color: #b7b7b7;
+    height: 1px;
+    z-index: 10;
+}
+
+a {
+    cursor: pointer;
+}
+
+a:visited,
+a:hover {
+    color: #000;
+}
+
+.parentheses {}
+
+.parentheses:before {
+    content: "(";
+}
+
+.parentheses:after {
+    content: ")";
+}
+
+.search-open-contact {
+    top: 0;
+}
+
+.search-open-contact .search-open {
+    margin-top: -45px;
+}
+
+.search-open-contact #wx-header {
+    top: -45px !important;
+}
+
+.weui-cell__hd {
+    margin-right: 10px;
+}
+
+.weui-cell__hd img {
+    width: 40px;
+}
+
+
+

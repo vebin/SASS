@@ -1,3 +1,9 @@
+import welcome from './common/welcome.vue'
+import nav from './common/wx-nav'
+import search from './common/search'
 
-import more from './tool/more'
-export default { more }
+import header from './clues/header'
+
+
+
+export default {welcome, header, nav, search  }
