@@ -13,18 +13,78 @@ const routes = [{
         name: "",
         component: resolve => require(["../components/items.vue"], resolve)
     },
-    // {
-    //     path: '/crm',
-    //     name: "",
-    //     component: resolve => require(["../components/lists/wechat.vue"], resolve)
-    // },{
-    //     path: '/wechat/dialogue',
-    //     name: "",
-    //     components: {
-    //         "default": resolve => require(["../components/lists/wechat.vue"], resolve),
-    //         "subPage": resolve => require(["../components/lists/dialogue.vue"], resolve)
-    //     }
-    // }
+    {
+        path: '/clue/buy',
+        name: "",
+        components: {
+            "default": resolve => require(["../components/items.vue"], resolve),
+            "subPage": resolve => require(["../components/clues/msg.vue"], resolve)
+        }
+    },
+    {
+        path: '/clue/msg',
+        name: "",
+        components: {
+            "default": resolve => require(["../components/items.vue"], resolve),
+            "subPage": resolve => require(["../components/clues/mymsg.vue"], resolve)
+        }
+    },
+    {
+        path: '/clue/msg/fmsg',
+        components: { 
+            "subPage": resolve => require(["../components/clues/fmsg.vue"], resolve)
+        }
+    },
+    {
+        path: '/clue/msg/fm',
+        components: { 
+            "subPage": resolve => require(["../components/clues/fm.vue"], resolve)
+        }
+    },
+    {
+        path: '/clue/msg/form',
+        components: { 
+            "subPage": resolve => require(["../components/clues/form.vue"], resolve)
+        }
+    }, 
+
+
+
+    {
+        path: '/crm',
+        name: "",
+        component: resolve => require(["../components/crm/index.vue"], resolve)
+    },
+    {
+        path: '/crm/msg',
+        name: "",
+        components: {
+            "default": resolve => require(["../components/crm/index.vue"], resolve),
+            "subPage": resolve => require(["../components/crm/msg.vue"], resolve)
+        }
+    },
+    {
+        path: '/crm/msg/form',
+        components: { 
+            "subPage": resolve => require(["../components/crm/form.vue"], resolve)
+        }
+    }, 
+
+
+
+    {
+        path: '/self',
+        name: "",
+        component: resolve => require(["../components/self/index.vue"], resolve)
+    },
+    {
+        path: '/self/buy',
+        name: "",
+        components: {
+            "default": resolve => require(["../components/self/index.vue"], resolve),
+            "subPage": resolve => require(["../components/self/buy.vue"], resolve)
+        }
+    },
 
 ]
 export default new Router({

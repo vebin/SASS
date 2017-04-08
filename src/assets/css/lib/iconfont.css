@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 268446 */
-  src: url('//at.alicdn.com/t/font_y6g7iyje6pcwstt9.eot');
-  src: url('//at.alicdn.com/t/font_y6g7iyje6pcwstt9.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_y6g7iyje6pcwstt9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_y6g7iyje6pcwstt9.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_y6g7iyje6pcwstt9.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_u1q7eh958cg3z0k9.eot');
+  src: url('//at.alicdn.com/t/font_u1q7eh958cg3z0k9.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_u1q7eh958cg3z0k9.woff') format('woff'),
+  url('//at.alicdn.com/t/font_u1q7eh958cg3z0k9.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_u1q7eh958cg3z0k9.svg#iconfont') format('svg');
 }
 
 .ffm {
@@ -22,34 +22,11 @@
 
 .ico-crm:before{ content: '\e603';} 
 
+.ico-dou:before{ content: '\e602';}
+
+.ico-why:before{ content: '\e6a8';} 
+
+.ico-sell:before{ content: '\e67b';} 
 
 
-
-/**/
-.icon-tips-jia::before { content: "\e605"; }
-.icon-return-arrow::before { content: "\e60a"; }
-.icon-tips-add-friend::before { content: "\e606"; }
-.icon-chat-set::before { content: "\e60e"; }
-.icon-mute::before { content: "\e604"; }
-.icon-tips-xiaoxi::before { content: "\e607"; }
-.icon-chat-person::before { content: "\e60c"; }
-.icon-chat-friends::before { content: "\e60c"; }
-.icon-more::before { content: "\e60b"; }
-.icon-tips-saoyisao::before { content: "\e608"; }
-.icon-wechat::before { content: "\e600"; }
-.icon-me::before { content: "\e601"; }
-.icon-dialogue-jia::before { content: "\e615"; }
-.icon-tips-fukuan::before { content: "\e609"; }
-.icon-contact::before { content: "\e610"; }
-.icon-find::before { content: "\e603"; }
-.icon-chat-group::before { content: "\e60d"; }
-.icon-chat-detail-add::before { content: "\e616"; }
-
-.icon-dialogue-voice::before { content: "\e60f"; }
-.icon-dialogue-jianpan::before { content: "\e611"; }
-.icon-dialogue-smile::before { content: "\e612"; }
-.icon-dialogue-bar-jianpan::before{ content: "\e602"; }
-.icon-dialogue-bar-menu::before{ content: "\e613"; }
-.icon-search::before{ content: "\e614"; }
-.icon-iphone-address::before{ content: "\e617"; }
 

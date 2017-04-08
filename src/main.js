@@ -11,10 +11,20 @@ import components from './components/' //加载公共组件
 import { Confirm, Alert, Toast, Notify, Loading } from 'vue-ydui/dist/lib.rem/dialog'
 import {Badge} from 'vue-ydui/dist/lib.rem/badge'
 import {InfiniteScroll} from 'vue-ydui/dist/lib.rem/infinitescroll'
+import {Popup} from 'vue-ydui/dist/lib.rem/popup'
+import {TextArea} from 'vue-ydui/dist/lib.rem/textarea'
+import {Switch} from 'vue-ydui/dist/lib.rem/switch'
+import {Button} from 'vue-ydui/dist/lib.rem/button'
+import {SendCode} from 'vue-ydui/dist/lib.rem/sendcode'
 
 import 'vue-ydui/dist/ydui.base.css'
 import './assets/common.css'
 
+Vue.component(SendCode.name, SendCode)
+Vue.component(Button.name, Button)
+Vue.component(Switch.name, Switch)
+Vue.component(TextArea.name, TextArea)
+Vue.component(Popup.name, Popup)
 Vue.component(InfiniteScroll.name, InfiniteScroll)
 Vue.component(Badge.name, Badge)
 Vue.prototype.$dialog = {

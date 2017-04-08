@@ -9,32 +9,17 @@ import getters from "./getters"
 Vue.use(Vuex)
 
 const state = {
-    clueNav: 0,
+    clueNav: 0,         // 切换线索池和我的线索
+    showAddr: false,    //  显示地址选择
+    showType: false,    //  显示选择车类别
+
+
+
+
+
+
     newMsgCount: 0, //新消息数量
-    allContacts: [{
-        "wxid": "wxid_baiqian",
-        "initial": 'b',
-        "headerUrl": "https://sinacloud.net/vue-wechat/images/headers/baiqian.jpg",
-        "nickname": "白浅",
-        "sex": 0,
-        "remark": "",
-        "signature": "青丘女帝，天族天妃",
-        "telphone": 18896586152,
-        "album": [{
-            imgSrc: "https://sinacloud.net/vue-wechat/images/album/baiqian/baiqian01.jpeg",
-            date: 182625262
-        }, {
-            imgSrc: "https://sinacloud.net/vue-wechat/images/album/baiqian/baiqian02.jpeg",
-            date: 182625262
-        }],
-        "area": ["青丘", "狐狸洞"],
-        "from": "通过扫一扫",
-        "tag": "女帝",
-        "desc": {
-            "title": "",
-            "picUrl": ""
-        }
-    }], //所有联系人
+    
     OfficialAccounts: [{
                         wxid: "Google_Developers",
                         name: "谷歌开发者",

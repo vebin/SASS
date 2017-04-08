@@ -2,10 +2,6 @@
     <div id="app">
         <v-welcome></v-welcome>
         <div class="outter flex-wrap col-flex" :class="{'hideLeft':$route.path.split('/').length>2}">
-            <!--通用头部-->
-            <header class="app-header" :class="{'header-hide':!$store.state.headerStatus}">
-                <v-header></v-header>
-            </header>
             <!--门面页 “线索” “联系人” “我的”-->
             <section class="page">
                 <keep-alive>
