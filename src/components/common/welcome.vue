@@ -1,20 +1,70 @@
 <template>
     <div class="welcome" :class="{hide:hide}">
-        <img src="https://sinacloud.net/vue-wechat/images/welcome.jpg" alt="">
+        <img :src="welcomeImg" alt="">
     </div>
 </template>
 <script>
+import welcomeImg from '../../assets/welcome.jpg'
+import XHR from '../../api/service'
+import axios from 'axios'
 export default {
     data() {
-            return {
-                hide: false
-            }
-        },
-        mounted() {
-            setTimeout(() => {
-                this.hide = true
-            }, 1000)
+        return {
+            welcomeImg:welcomeImg,
+            hide: false
         }
+    },
+    created () {
+        let ADDRS = JSON.parse(localStorage.getItem('WX_ADDRS')) || ''
+        let ADDRSALL = JSON.parse(localStorage.getItem('WX_ADDRSALL')) || ''
+        let CARTYPE = JSON.parse(localStorage.getItem('WX_CARTYPE')) || ''
+
+        if (ADDRS !== '' && CARTYPE !== '' && ADDRSALL !== '') {
+            this.hide = true
+            this.jump('/clue')
+        } else {
+            this.getDATA()
+        }
+    },
+    methods: {
+        getDATA(){
+            let self = this
+            XHR.getAST()
+            .then(axios.spread(function (ADDRS, CARTYPE, ADDR ) {
+                if (ADDRS.data.state == '1') {
+                    localStorage.setItem('WX_ADDRS',JSON.stringify(ADDRS.data))
+                } else {
+                    self.toastError(ADDRS.data.errmsg)
+                    return false
+                }
+                if (CARTYPE.data.state == '1') {
+                    localStorage.setItem('WX_CARTYPE',JSON.stringify(CARTYPE.data))
+                } else {
+                    self.toastError(CARTYPE.data.errmsg)
+                    return false
+                }
+                
+                localStorage.setItem('WX_ADDRSALL',JSON.stringify(ADDR.data))
+                
+                self.hide = true
+                self.jump('/clue')
+            }))
+            .catch(function (err, errs) {
+                // console.log(err)
+                // self.isNull = false
+            })
+        },
+        toastError(txt) {
+            this.$dialog.toast({
+                mes: txt,
+                timeout: 3000,
+                icon: 'error',
+                callback: () => {
+                    this.$dialog.alert({mes: '请检查网络'})
+                }
+            })
+        },
+    }
 }
 </script>
 <style>

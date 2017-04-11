@@ -3,11 +3,49 @@ import Router from 'vue-router'
 
 Vue.use(Router)
     //app整体由店面页和店内页组成 暂时并没有用到嵌套路由
-const routes = [{
+const routes = [
+    {
         path: '/',
-        name: "微信",
         component: resolve => require(["../components/common/welcome.vue"], resolve)
-    }, 
+    },
+    {
+        path: '/m/app/welcome',
+        components: { 
+            "subPage": resolve => require(["../components/login/index.vue"], resolve)
+        }
+    },
+    {
+        path: '/m/app/login',
+        components: {
+            "subPage": resolve => require(["../components/login/login.vue"], resolve)
+        }
+    },
+    {
+        path: '/m/app/step1',
+        components: {
+            "subPage": resolve => require(["../components/login/step1.vue"], resolve)
+        }
+    },
+    {
+        path: '/m/app/step2',
+        components: {
+            "subPage": resolve => require(["../components/login/step2.vue"], resolve)
+        }
+    },
+    {
+        path: '/m/app/step3',
+        components: {
+            "subPage": resolve => require(["../components/login/step3.vue"], resolve)
+        }
+    },
+    {
+        path: '/isok',
+        components: { 
+            "subPage": resolve => require(["../components/isok.vue"], resolve)
+        }
+    },
+
+
     {
         path: '/clue',
         name: "",
@@ -85,10 +123,16 @@ const routes = [{
             "subPage": resolve => require(["../components/self/buy.vue"], resolve)
         }
     },
+    {
+        path: '/self/buy/record',
+        components: { 
+            "subPage": resolve => require(["../components/self/items.vue"], resolve)
+        }
+    }, 
 
 ]
 export default new Router({
-    base: "/clue",
+    base: "/",
     routes,
     // scrollBehavior(to, from, savedPosition) {
     //     if (savedPosition) {

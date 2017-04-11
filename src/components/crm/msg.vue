@@ -4,25 +4,25 @@
             <div class="ms-g-box">
                 <div class="ms-g-item flex-wrap row-flex">
                     <div class="ms-g-lft">姓名</div>
-                    <div class="page ms-g-rit">雷诺</div>
+                    <div class="page ms-g-rit">{{DATA.realname}}</div>
                 </div>
                 <div class="ms-g-item flex-wrap row-flex">
                     <div class="ms-g-lft">联系方式</div>
                     <div class="page flex-wrap row-flex">
-                        <div class="page">1232324343</div>
+                        <div class="page">{{DATA.tel}}</div>
                         <div class="v-now"></div>
                     </div>
                 </div>
                 <div class="ms-g-item flex-wrap row-flex">
                     <div class="ms-g-lft">提车地区</div>
-                    <div class="page ms-g-rit">新疆 xxxx</div>
+                    <div class="page ms-g-rit">{{DATA.address}}</div>
                 </div>
             </div>
 
             <div class="ms-g-box">
                 <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                     <div class="ms-g-lft">备注</div>
-                    <div class="page ms-txt">asdsfsdsdsdfsdasdsfsdsdsdfsdsdfsdfsdfsdffdfdfdfdfdfdfdfsdfsdfsdfsdffdfdfdfdfdfdfdf</div>
+                    <div class="page ms-txt">{{DATA.remark}}</div>
                 </div>
             </div>
 
@@ -47,7 +47,44 @@
     </div>
 </template>
 <script>
-    export default {}
+import XHR from '../../api/service'
+    export default {
+        data() {
+            return {
+                showAddr: false,
+                showType: false,
+                DATA:{}
+            }
+        },
+        created () {
+            this.$dialog.loading.open('数据加载中…')
+            this.loadingS(this.$route.query.id)
+        },
+        methods: {
+            loadingS (cid) {
+                let self = this
+                let json = {}
+                json.id = cid
+                XHR.getPopMsg(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                        }, 400)
+                        
+                        self.DATA = res.data.body
+                        
+                    } else {
+                        
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
+            },
+        }
+    }
 </script>
 <style lang="less" scoped>
 .v-now{font-size: 0.36rem; color: #ff6500; padding-left: 0.4rem;}

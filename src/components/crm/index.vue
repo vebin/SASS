@@ -3,12 +3,13 @@
         <v-search></v-search>
         <v-nus v-if="false"></v-nus>
         <yd-infinitescroll v-if="true" :on-infinite="loadList" class="page">
-            <div slot="list">
+            <div slot="list" class="all-item-box">
 
 
-                <div class="crm-item-box"
-                    @click="jump('/crm/msg')">
-                    <div class="crm-item-txt">路飞<i>13232323</i></div>
+                <div v-for="em in DATA"
+                    class="crm-item-box"
+                    @click="jump({path:'/crm/msg',query:{id: em.id}})">
+                    <div class="crm-item-txt">{{em.realname}}<i>{{em.tel}}</i></div>
                 </div>
 
 
@@ -25,12 +26,18 @@
     </div>
 </template>
 <script>
+import XHR from '../../api/service'
     export default {
         data() {
             return {
+                isNull: false,
                 page: 1,
                 DATA:[]
             }
+        },
+        created () {
+            this.$dialog.loading.open('数据加载中…')
+            this.loadList()
         },
         methods: {
             // /* 所有数据加载完毕 */
@@ -38,17 +45,47 @@
                   
             // /* 单次请求数据完毕 */
             // window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-            loadList() {},
-            loist() {
-                window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+            loadList() {
+                let self = this
+                let json = {}
+                json.pg = this.page
+                XHR.getPopList(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                        }, 400)
+                        if(res.data.body.pagerecord >= 10 && res.data.body.pagerecord !== 0){
+                            if( self.page == res.data.body.pagecount){
+                                window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+                            } else {
+                                self.page++
+                            }
+                        } else {
+                            window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+                        }
+                        self.DATA.push(...res.data.body.contactslist)
+                        window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
+                        if(self.DATA.length == '0'){
+                            self.isNull = true
+                        }
+                    } else {
+                        
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
+
             }
         }
     }
 </script>
 <style lang="less" scoped>
 .cl-box{width: 100%; height: 100%;}
-.crm-item-box{background-color: #fff; padding: 0 0.3rem; height: 0.84rem; line-height: 0.84rem;}
-.crm-item-txt{border-bottom:0.02rem solid #eee; color: #333; font-size: 0.3rem;
+.crm-item-box{background-color: #fff; padding: 0 0.3rem; height: 0.84rem; line-height: 0.84rem; border-bottom:0.02rem solid #eee;}
+.crm-item-txt{ color: #333; font-size: 0.3rem;
     i{ color: #666; font-size: 0.26rem; padding-left: 0.2rem;}
 }
 </style>

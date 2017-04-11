@@ -4,32 +4,34 @@
             <v-header></v-header>
         </header>
         <v-search></v-search>
-        <div class="flex-wrap row-flex midCenter cl-nav">
+        <div v-if="false" class="flex-wrap row-flex midCenter cl-nav">
             <div class="page midCenter">综合</div>
             <div class="page midCenter flex-wrap row-flex v-ud active">客户级别<i class=''></i></div>
             <div class="page midCenter flex-wrap row-flex v-ud">询价时间<i class='acs'></i></div>
             <div class="page midCenter v-sx active"
                 @click="showSc = true">筛选</div>
         </div>
-        <yd-infinitescroll :on-infinite="loadList" class="page">
-            <div slot="list">
+        <v-nus v-if="isNull" txt="没有线索哦～"></v-nus>
+        <yd-infinitescroll v-if="!isNull" :on-infinite="loadList" class="scroll-wrap">
+            <div slot="list" class="all-item-box">
 
 
-                <div class="c-item-box flex-wrap row-flex mx-Center"
-                    @click="jump('/clue/msg')">
+                <div v-for="em in DATA"
+                    class="c-item-box flex-wrap row-flex mx-Center"
+                    @click="jump({path:'/clue/msg',query:{id: em.id}})">
                     <div class="page flex-wrap col-flex">
                         <div class="flex-wrap row-flex mx-Center">
-                            <div class="c-title">雷诺</div>
-                            <div class="c-old">雷诺</div>
+                            <div class="c-title">{{em.uname}}</div>
+                            <div class="c-old"></div>
                         </div>
-                        <div class="c-txt">新疆新疆吐鲁番吐鲁番</div>
+                        <div class="c-txt">{{em.title}}</div>
                         <div class="page flex-wrap row-flex mx-Center">
-                            <div class="v-name">置换</div>
-                            <div class="v-name">贷款</div>
+                            <div v-for="ems in em.tag"
+                                    class="v-name">{{ems}}</div>
                         </div>
                     </div>
 
-                    <div class="c-str fil deo">A 精品</div>
+                    <div v-if="em.mark !== ''" :class="isStyle(em.mark)">{{em.mark}}</div>
                 </div>
 
 
@@ -50,24 +52,70 @@
     </div>
 </template>
 <script>
+import XHR from '../../api/service'
     export default {
         data() {
             return {
                 showSc: false,
                 page: 1,
+                isNull: false,
+
                 DATA:[]
             }
         },
+        created () {
+            this.$dialog.loading.open('数据加载中…')
+            this.loadList()
+        },
         methods: {
             hideSc () { this.showSc = !this.showSc},
+            isStyle (typ) {
+                if( typ == 'O 成功'){
+                    return 'c-str deo'
+                }
+                if( typ == 'F 战败'){
+                    return 'c-str fil'
+                }
+                return 'c-str'
+            },
             // /* 所有数据加载完毕 */
             // window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
                   
             // /* 单次请求数据完毕 */
             // window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-            loadList() {},
-            loist() {
-                window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+            loadList() {
+                let self = this
+                let json = {}
+                json.pg = this.page
+                XHR.getBuyList(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                        }, 400)
+                        if(res.data.body.pagerecord >= 10 && res.data.body.pagerecord !== 0){
+                            if( self.page == res.data.body.pagecount){
+                                window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+                            } else {
+                                self.page++
+                            }
+                        } else {
+                            window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+                        }
+                        self.DATA.push(...res.data.body.clueslist)
+                        window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
+                        if(self.DATA.length == '0'){
+                            self.isNull = true
+                        }
+                    } else {
+                        
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
+
             }
         }
     }

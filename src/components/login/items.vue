@@ -3,40 +3,40 @@
         <header class="app-header">
             <v-header></v-header>
         </header>
-        <div v-if="false" class="flex-wrap row-flex midCenter cl-nav">
+        <div class="flex-wrap row-flex midCenter cl-nav">
             <div class="page midCenter">综合</div>
             <div class="page midCenter">精品</div>
             <div class="page midCenter flex-wrap row-flex m-v"
-                @click="showADDR">地区<i></i></div>
+                @click="showAddr = true">地区<i></i></div>
             <div class="page midCenter flex-wrap row-flex m-v"
-                @click="showTYPE">类别<i></i></div>
+                @click="showType = true">类别<i></i></div>
         </div>
-        <v-nus v-if="isNull" txt="没有线索哦～"></v-nus>
-        <yd-infinitescroll v-if="!isNull" :on-infinite="loadList" class="scroll-wrap">
-            <div slot="list" class="all-item-box">
+        <yd-infinitescroll :on-infinite="loadList" class="scroll-wrap flex-wrap col-flex">
+            <div slot="list">
 
-                <div v-for="em in DATA"
-                    class="c-item-box flex-wrap col-flex"
-                    @click="jump({path:'/clue/buy',query:{id: em.id}})">
+
+
+                <div class="c-item-box flex-wrap col-flex"
+                    @click="jump('/clue/buy')">
                     <div class="flex-wrap row-flex mx-Center">
-                        <div v-if="em.mark !== ''" class="c-str">{{em.mark}}</div>
-                        <div class="page c-title">{{em.title}}</div>
+                        <div class="c-str">精品</div>
+                        <div class="page c-title">雷诺等了色的课程 6X4 牵引车</div>
                     </div>
                     <div class="flex-wrap row-flex">
-                        <div class="page c-txt">{{em.address}}</div>
-                        <div class="page c-txt">{{em.uname}} &nbsp;&nbsp;&nbsp;&nbsp;{{em.showdatetime}}</div>
+                        <div class="page c-txt">新疆 吐鲁番</div>
+                        <div class="page c-txt">路飞 10分钟前</div>
                     </div>
                     <div class="page flex-wrap row-flex">
                         <div class="page flex-wrap row-flex">
                             <div class="page flex-wrap row-flex mx-Center">
-                                <div v-for="ems in em.tag"
-                                    class="v-name">{{ems}}</div>
+                                <div class="v-name">置换</div>
+                                <div class="v-name">贷款</div>
                             </div>
                         </div>
                         <div class="page flex-wrap row-flex">
                             <div class="page flex-wrap row-flex fx-end">
-                                <div class="v-now">{{em.salemoney}}</div>
-                                <div class="v-old">{{em.salemoney_pre}}</div>
+                                <div class="v-now">20</div>
+                                <div class="v-old">30</div>
                             </div>
                         </div>
                     </div>
@@ -56,52 +56,24 @@
 
         </yd-infinitescroll>
         <yd-popup v-model="showAddr" position="right" width="60%">
-            <v-addr @hides="hideAddr" @act="psnA" :txt="psn"></v-addr>
+            <v-addr @hides="hideAddr"></v-addr>
         </yd-popup>
-        <yd-popup v-model="showType" position="right" width="60%">
-            <v-cartype @hides="hideType" @act="typeidA" :txt="typeid"></v-cartype>
+        <yd-popup v-model="showType" position="right" width="80%">
+            <v-cartype @hides="hideType"></v-cartype>
         </yd-popup>
     </div>
 </template>
 <script>
-import XHR from '../../api/service'
     export default {
         data() {
             return {
                 showAddr: false,
                 showType: false,
                 page: 1,
-                isNull: false,
-
-                psn:-1,
-                typeid:-1,
-
                 DATA:[]
             }
         },
-        created () {
-            this.$dialog.loading.open('数据加载中…')
-            this.loadList()
-        },
         methods: {
-            psnA (id){
-                this.psn = id
-                this.hideAddr()
-            },
-            typeidA (id){
-                this.typeid = id
-                this.hideType()
-            },
-            showADDR () {
-                let ADDRS = JSON.parse(localStorage.getItem('WX_ADDRS')) || []
-                this.$store.commit("ADDRS", ADDRS.body)
-                this.showAddr = true
-            },
-            showTYPE () {
-                let CARTYPE = JSON.parse(localStorage.getItem('WX_CARTYPE')) || []
-                this.$store.commit("CARTYPE", CARTYPE.body)
-                this.showType = true
-            },
             hideAddr () { this.showAddr = !this.showAddr},
             hideType () { this.showType = !this.showType},
             // /* 所有数据加载完毕 */
@@ -109,42 +81,9 @@ import XHR from '../../api/service'
                   
             // /* 单次请求数据完毕 */
             // window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-            loadList() {
-                let self = this
-                let json = {}
-                json.pg = this.page
-                json.psn = ''
-                json.typeid = ''
-                json.grade = ''
-                XHR.getAllClues(json)
-                .then(function (res) {
-                    // console.log(res)
-                    if (res.data.state == '1') {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                        }, 400)
-                        if(res.data.body.pagerecord >= 10 && res.data.body.pagerecord !== 0){
-                            if( self.page == res.data.body.pagecount){
-                                window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
-                            } else {
-                                self.page++
-                            }
-                        } else {
-                            window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
-                        }
-                        self.DATA.push(...res.data.body.clueslist)
-                        window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-                        if(self.DATA.length == '0'){
-                            self.isNull = true
-                        }
-                    } else {
-                        
-                    }
-                })
-                .catch(function (err) {
-                    
-                })
-
+            loadList() {},
+            loist() {
+                window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
             }
         }
     }

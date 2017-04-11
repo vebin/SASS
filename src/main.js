@@ -17,9 +17,12 @@ import {Switch} from 'vue-ydui/dist/lib.rem/switch'
 import {Button} from 'vue-ydui/dist/lib.rem/button'
 import {SendCode} from 'vue-ydui/dist/lib.rem/sendcode'
 
+import {Spinner} from 'vue-ydui/dist/lib.rem/spinner'
+
 import 'vue-ydui/dist/ydui.base.css'
 import './assets/common.css'
 
+Vue.component(Spinner.name, Spinner)
 Vue.component(SendCode.name, SendCode)
 Vue.component(Button.name, Button)
 Vue.component(Switch.name, Switch)

@@ -68,17 +68,14 @@ body {
 }
 
 .app-footer:not(:first-child)::before {
-    content: "";
+    content: " ";
     position: absolute;
-    width: 200%;
+    width: 100%;
     left: 0;
     top: 0;
-    transform: scale(.5);
-    transform-origin: 0 0;
-    -webkit-transform: scale(.5);
-    -webkit-transform-origin: 0 0;
-    background-color: #b7b7b7;
-    height: 1px;
+    border-top: 0.02rem solid #b7b7b7;
+    background:none;
+    height: 2px;
     z-index: 4;
 }
 
@@ -171,6 +168,26 @@ a {cursor: pointer;}
     content: "\E608";
 }
 /* ------线索详情共用布局---结束----- */
+#app .all-item-box{width: 100%; height: auto;}
+/* ------步骤盒子----- */
+.step-box{height: 2.5rem;border-bottom: 0.25rem solid #eee; width: 100%; padding: 0 0.6rem; }
+.step-min{position: relative; width: 100%; height: 100%; justify-content:space-between; align-items:center;}
+.step-min:before{content: ' '; width: 80%; height: 0.02rem; background-color: #ccc;position: absolute;top: 0.85rem; left: 10%; z-index: 1;}
+.step-item{ width: 1.2rem; text-align: center; position: relative; z-index: 4;font-size: 0.26rem;}
+.step-item:before{content: '1'; width: 0.6rem; height: 0.6rem; border-radius: 0.6rem; color: #666;font-size: 0.26rem; font-weight: 500; border:0.02rem solid #ccc; display: block;margin:0 auto 0.2rem; background-color: #fff; line-height: 0.6rem;}
+.step-item:nth-child(2):before{content: '2';}
+.step-item:nth-child(3):before{content: '3';}
+.step-active{color: #04be02;}
+.step-active:before{ background-color: #04be02; color: #fff;}
+/* ------按钮样式----- */
+#app .btn-block{height: 0.85rem;}
+#app .btn-disabled{background-color: #dedede; color: #555;}
+.m-confirm .confirm-hd,.m-confirm .confirm-bd{text-align: center;}
+
+
+
+
+
 .parentheses {}
 .parentheses:before { content: "(";}
 .parentheses:after {content: ")";}

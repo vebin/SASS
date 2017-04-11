@@ -4,18 +4,21 @@
             @click="$emit('hides')">类别</div>
         <div class="page flex-wrap row-flex">
             <ul class="page page-box">
-                <li class="fl-pop-txt flpopactive">自卸车</li>
-            </ul>
-            <ul class="page page-box fl-pop-right">
-                <li class="fl-pop-txt flpopactive">自卸车</li>
+                <li v-for="em in DATA" 
+                class="fl-pop-txt"
+                @click="$emit('act',em.sn,em.nm)"
+                :class="{'flpopactive':txt == em.sn}">{{em.nm}}</li>
             </ul>
         </div>
     </div>
 </template>
 <script>
     export default {
-        methods: {
-            
+        props:{
+            txt: Number
+        },
+        computed: {
+          DATA () {return this.$store.state.carType}
         }
     }
 </script>

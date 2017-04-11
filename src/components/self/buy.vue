@@ -4,7 +4,7 @@
           <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
               <div class="ms-gx-lft ico-sell"></div>
               <div class="page ms-g-rit flex-wrap row-flex ms-cell-arrow"
-                  @click="jump('/self/buy')">充值记录</div>
+                  @click="jump('/self/buy/record')">充值记录</div>
           </div>
       </div>
       <div class="sn-title">选择卡豆充值数量</div>
@@ -25,17 +25,25 @@
           <yd-button size="large" type="primary">立即充值</yd-button>
           <div class="flex-wrap row-flex so-swif">
             <yd-switch v-model="switchs"></yd-switch>
-            <div class="mb-xie">我同意《<i>卡豆充值协议</i>》</div>
+            <div class="mb-xie" @click.native="showMsg = true">我同意《<i>卡豆充值协议</i>》</div>
           </div>
       </div>
+      <yd-popup v-model="showMsg" position="center" width="80%">
+        
+        <yd-button size="large" type="hollow" @click.native="showMsg = false">关闭</yd-button>
+      </yd-popup>
   </div>
 </template>
 <script>
     export default {
       data(){
         return {
-          switchs: false
+          switchs: false,
+          showMsg: false,
         }
+      },
+      methods: {
+        hideMsg () { this.showMsg = !this.showMsg},
       }
     }
 </script>
