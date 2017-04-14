@@ -81,8 +81,14 @@ import XHR from '../../api/service'
                         }, 300)
 
                     } else {
-                        self.$dialog.alert({mes: res.data.errmsg})
-                        self.$dialog.loading.close()
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
                     }
                 })
                 .catch(function (err) {

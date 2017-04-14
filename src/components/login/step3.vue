@@ -10,21 +10,21 @@
             </div>
 
 
-            <div v-if="false" class="step-input-box page flex-wrap col-flex midCenter">
+            <div v-if="step == '1'" class="step-input-box page flex-wrap col-flex midCenter">
                 <div class="nul-icos"></div>
                 <div class="nul-txt">您的注册申请提交成功，请耐心等待</div>
                 <div class="nul-txt">如有疑问，请<i>联系客服</i>咨询</div>
             </div>
 
 
-            <div v-if="false" class="step-input-box page flex-wrap col-flex midCenter">
+            <div v-if="step == '2'" class="step-input-box page flex-wrap col-flex midCenter">
                 <div class="ffm ico-sell"></div>
                 <div class="nul-txt">您的注册申请正在审核中，请耐心等待</div>
                 <div class="nul-txt">如有疑问，请<i>联系客服</i>咨询</div>
             </div>
 
 
-            <div class="step-input-box page flex-wrap col-flex midCenter">
+            <div v-if="step == '3'" class="step-input-box page flex-wrap col-flex midCenter">
                 <div class="ffm ico-nulls"></div>
                 <div class="nul-txt">您的注册申请审核未通过，请<i>重新提交</i>信息</div>
                 <div class="nul-txt">如有疑问，请<i>联系客服</i>咨询</div>
@@ -37,27 +37,16 @@
     </div>
 </template>
 <script>
-import logo from '../../assets/logo.png'
     export default {
         data() {
             return {
-                logo:logo, 
-                start1: false
+                step: 1
             }
         },
+        created () {
+            this.step = this.$route.query.id
+        },
         methods: {
-            sendCode1() {
-                this.$dialog.loading.open('发送中...')
-                setTimeout(() => {
-                    this.start1 = true
-                    this.$dialog.loading.close()
-                    this.$dialog.toast({
-                        mes: '已发送',
-                        icon: 'success',
-                        timeout: 1500
-                    })
-                }, 1000)
-            }
             
         }
     }

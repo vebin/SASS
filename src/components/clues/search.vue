@@ -1,17 +1,18 @@
 <template>
-    <div class="cl-box flex-wrap col-flex">
-        <header class="app-header">
-            <v-header></v-header>
-        </header>
-        <v-search :txt="allNumber" @go="jump('/clue/m/search')"></v-search>
-        <div v-if="false" class="flex-wrap row-flex midCenter cl-nav">
-            <div class="page midCenter">综合</div>
-            <div class="page midCenter flex-wrap row-flex v-ud active">客户级别<i class=''></i></div>
-            <div class="page midCenter flex-wrap row-flex v-ud">询价时间<i class='acs'></i></div>
-            <div class="page midCenter v-sx active"
-                @click="showSc = true">筛选</div>
+    <div class="flex-wrap col-flex">
+        <div class="weui-search-bar weui-search-bar_focusing">
+          <form class="weui-search-bar__form">
+            <div class="weui-search-bar__box">
+              <i class="weui-icon-search"></i>
+              <input type="text" v-model.trim="searchIpt" class="weui-search-bar__input"placeholder="搜索姓名或手机号" ref="sipt"/>
+              <a class="weui-icon-clear" @click="searchIpt = ''">x</a>
+            </div>
+
+          </form>
+          <a class="weui-search-bar__cancel-btn" @click="serBtn">搜索</a>
         </div>
-        <v-nus v-if="isNull" txt="没有线索哦～"></v-nus>
+
+        <v-nus v-if="isNull" txt="没有搜索到哦～"></v-nus>
         <yd-infinitescroll v-if="!isNull" :on-infinite="loadList" class="scroll-wrap">
             <div slot="list" class="all-item-box">
 
@@ -46,9 +47,7 @@
             </div>
         </yd-infinitescroll>
 
-        <yd-popup v-model="showSc" position="right" width="80%">
-            <v-scnav @hides="hideSc"></v-scnav>
-        </yd-popup>
+
     </div>
 </template>
 <script>
@@ -56,21 +55,18 @@ import XHR from '../../api/service'
     export default {
         data() {
             return {
-                showSc: false,
                 page: 1,
                 isNull: false,
 
                 DATA:[],
-                allNumber: 0
+
+                searchIpt: ''
             }
         },
-        created () {
-            this.$dialog.loading.open('数据加载中…')
-            this.loadList()
+        mounted (){
+            this.$refs.sipt.focus()
         },
-        
         methods: {
-            hideSc () { this.showSc = !this.showSc},
             isStyle (typ) {
                 if( typ == 'O 成功'){
                     return 'c-str deo'
@@ -80,14 +76,25 @@ import XHR from '../../api/service'
                 }
                 return 'c-str'
             },
-            // /* 所有数据加载完毕 */
-            // window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
-                  
-            // /* 单次请求数据完毕 */
-            // window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
+            serBtn(){
+                if(this.searchIpt == ''){
+                    this.$dialog.toast({
+                        mes: '搜索不能为空',
+                        timeout: 2000,
+                        icon: 'error',
+                        callback: () => {
+                            this.$refs.sipt.focus()
+                        }
+                    })
+                    return false
+                }
+                this.$dialog.loading.open('搜索中…')
+                this.loadList()
+            },
             loadList() {
                 let self = this
                 let json = {}
+                json.keyword = this.searchIpt
                 json.pg = this.page
                 XHR.getBuyList(json)
                 .then(function (res) {
@@ -105,7 +112,6 @@ import XHR from '../../api/service'
                         } else {
                             window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
                         }
-                        self.allNumber = res.data.body.recordtotal
                         self.DATA.push(...res.data.body.clueslist)
                         window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
                         if(self.DATA.length == '0'){
@@ -131,53 +137,7 @@ import XHR from '../../api/service'
     }
 </script>
 <style lang="less" scoped>
-.cl-box{width: 100%; height: 100%;}
-.cl-nav{
-    background-color: #fff;
-    border: 0.02rem solid #e6e6e6;
-    border-left: 0;
-    border-right: 0;
-    height: 0.8rem;
-    font-size:0.3rem; 
-    div{
-        text-align: center;
-    }
-}
-.v-sx:after{content:'\e61b'; font-family: 'iconfont'; color: #9e9e9e; margin-left: 0.1rem;}
-.v-sx.active:after{color:#00b800;}
-
-.v-ud{
-    i{
-      margin-left: 0.1rem;
-      &:before{
-         content:' ';
-         width: 0;
-         height: 0;
-         display: block;
-         border-left: 0.08rem solid transparent;
-         border-right: 0.08rem solid transparent;
-         border-bottom: 0.12rem solid #9e9e9e;
-         margin-bottom: 0.06rem;
-      }
-      &:after{
-        content:' ';
-        width: 0;
-        height: 0;
-        display: block;
-        border-left: 0.08rem solid transparent;
-        border-right: 0.08rem solid transparent;
-        border-top: 0.12rem solid #9e9e9e;
-      }
-    }
-  }
-.active{
-    color: #00b800;
-    i:before{}
-    i:after{border-top: 0.12rem solid #00b800;}
-    .acs:before{border-bottom: 0.12rem solid #00b800;}
-    .acs:after{border-top: 0.12rem solid #ccc;}
-}
-
+.weui-search-bar{width: 100%; height: 0.88rem;}
 .c-item-box{
     padding: 0.12rem 0.3rem 0.2rem;
     border-bottom: 0.02rem solid #eee;

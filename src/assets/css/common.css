@@ -7,7 +7,6 @@
 */
 
 #app {
-    position: absolute;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -81,14 +80,12 @@ body {
 
 .sub-page {
     position: absolute;
-    top: 0px;
-    bottom: 0px;
+    top: 0;
     background: #eee;
     height: 100%;
     width: 100%;
     overflow: hidden;
     right: 0;
-    left: 0;
     z-index: 5;
 }
 
@@ -123,6 +120,8 @@ a {cursor: pointer;}
     width: 100%;
     box-sizing:border-box;
     padding-left: 0.3rem;
+    overflow: hidden;
+    text-overflow:ellipsis; white-space:nowrap;
     line-height: 0.84rem;
     font-size: 0.3rem;
     border-bottom: 0.02rem solid #eee;
@@ -183,7 +182,7 @@ a {cursor: pointer;}
 #app .btn-block{height: 0.85rem;}
 #app .btn-disabled{background-color: #dedede; color: #555;}
 .m-confirm .confirm-hd,.m-confirm .confirm-bd{text-align: center;}
-
+body .m-notify{z-index: 9999;-webkit-transform: translateZ(0);background-color: rgba(244, 67, 54, 0.88); font-size: 0.28rem; font-weight: 500;}
 
 
 

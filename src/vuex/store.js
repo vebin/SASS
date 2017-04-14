@@ -16,10 +16,17 @@ const state = {
     allAddrs: [],          // 省市地址
     carType: [],        // 挂车类型
 
-    myMsg:{
+    myMsg:{             // 线索详情
         followup:[]
     },
 
+    myCrm:{             // 联系人详情
+        clueslist:[]
+    },
+
+    USIF:{},            // 个人信息
+
+    UTEL:'',            // 用户手机号
 
 
     newMsgCount: 0, //新消息数量

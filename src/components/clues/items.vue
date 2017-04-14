@@ -82,7 +82,9 @@ import XHR from '../../api/service'
         created () {
             this.$dialog.loading.open('数据加载中…')
             this.loadList()
+            // this.WXCODE()
         },
+
         methods: {
             psnA (id){
                 this.psn = id
@@ -138,13 +140,37 @@ import XHR from '../../api/service'
                             self.isNull = true
                         }
                     } else {
-                        
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
                     }
                 })
                 .catch(function (err) {
                     
                 })
 
+            },
+            WXCODE(){
+                let self = this
+                let json = {}
+                json.url = `https://${window.location.host}/${window.location.pathname}`
+                XHR.getWxConfig(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        localStorage.setItem('WX_CONFIGXS',JSON.stringify(res.data.body))
+                    } else {
+                        
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
             }
         }
     }

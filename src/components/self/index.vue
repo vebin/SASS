@@ -1,10 +1,10 @@
 <template>
     <div class="cl-box flex-wrap col-flex">
         <div class="se-mx-box flex-wrap row-flex mx-Center">
-            <img src="https://s.kcimg.cn/m/images/home/login.png" class="se-mx-ico"/>
+            <img :src="DATA.photo" class="se-mx-ico"/>
             <div class="page flex-wrap col-flex ms-mx-pox">
-                <div class="ms-mx-txt">乌拉山</div>
-                <div class="ms-mx-do">我的卡豆：<i class="v-now">20</i></div>
+                <div class="ms-mx-txt">{{DATA.nike}}</div>
+                <div class="ms-mx-do">我的卡豆：<i class="v-now">{{DATA.money}}</i></div>
             </div>
         </div>
         <div class="ms-g-box">
@@ -14,7 +14,7 @@
                     @click="jump('/self/buy')">卡豆充值</div>
             </div>
         </div>
-        <div class="ms-g-box">
+        <div v-if="false" class="ms-g-box">
             <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                 <div class="ms-gx-lft ico-why"></div>
                 <div class="page ms-g-rit flex-wrap row-flex ms-cell-arrow"
@@ -24,8 +24,49 @@
     </div>
 </template>
 <script>
+import XHR from '../../api/service'
     export default {
-        mounted() {
+        computed: {
+          DATA () {return this.$store.state.USIF}
+        },
+        created () {
+            this.$dialog.loading.open('数据加载中…')
+            this.loadingS()
+        },
+        activated (){
+            // this.$dialog.loading.open('数据加载中…')
+            this.loadingS()
+        },
+        methods: {
+            loadingS () {
+                let self = this
+                let json = {}
+                XHR.getUSIF(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                        }, 400)
+                        // self.DATA = res.data.body
+
+                        self.$store.commit("setUSIF", res.data.body)
+                        
+                    } else {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
+            },
 
         }
     }

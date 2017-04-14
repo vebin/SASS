@@ -12,6 +12,7 @@
 </template>
 <script>
 import logo from '../../assets/logo.png'
+import XHR from '../../api/service'
     export default {
         data() {
             return {
@@ -19,9 +20,25 @@ import logo from '../../assets/logo.png'
                 
             }
         },
+        created () {
+            this.WXCODE()
+        },
         methods: {
-            cao(){
-                console.log(232323)
+            WXCODE(){
+                let self = this
+                let json = {}
+                XHR.getWxConfig(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        localStorage.setItem('WX_CONFIGXS',JSON.stringify(res.data.body))
+                    } else {
+                        
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
             }
             
         }

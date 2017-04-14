@@ -6,6 +6,30 @@ class API {
   getWxConfig () {
     return `${HTTP}saleassistant/u/wxjsdkconfig.aspx`
   }
+// 注册发送验证码
+  getRsend () {
+    return  `${HTTP}saleassistant/u/rfirst_send.aspx`
+  }
+// 注册校验验证码
+  getRirst () {
+    return  `${HTTP}saleassistant/u/rfirst.aspx`
+  }
+// 帐号绑定 发送验证码
+  getBinds () {
+    return  `${HTTP}saleassistant/u/u_binding_first.aspx`
+  }
+
+// 帐号绑定 校验验证码
+  getBindSend () {
+    return  `${HTTP}saleassistant/u/u_binding_second.aspx`
+  }
+
+// 提交注册信息
+  saveRsecond () {
+    return  `${HTTP}saleassistant/u/rsecond.aspx`
+  }
+
+/*---------------------UC------------------------*/
 // 获取省份
   getSF () {
     return  `${HTTP}cm/province.aspx`
@@ -49,15 +73,6 @@ class API {
   }
 
 
-// 注册发送验证码
-  getRsend () {
-    return  `${HTTP}saleassistant/u/rfirst_send.aspx`
-  }
-// 注册校验验证码
-  getRirst () {
-    return  `${HTTP}saleassistant/u/rfirst.aspx`
-  }
-
 
 
 // 获取卡豆列表
@@ -72,28 +87,25 @@ class API {
   getPopMsg () {
     return  `${HTTP}saleassistant/contacts/contacts.aspx`
   }
+// 添加/修改联系人资料
+  editPop () {
+    return  `${HTTP}saleassistant/contacts/contacts_edit.aspx`
+  }
 
-  
-// 注册校验验证码
-//   getCity () {
-//     return  `${HTTP}saleassistant/u/rfirst.aspx`
-//   }
-// // 注册校验验证码
-//   getCity () {
-//     return  `${HTTP}saleassistant/u/rfirst.aspx`
-//   }
-// // 注册校验验证码
-//   getCity () {
-//     return  `${HTTP}saleassistant/u/rfirst.aspx`
-//   }
-// // 注册校验验证码
-//   getCity () {
-//     return  `${HTTP}saleassistant/u/rfirst.aspx`
-//   }
-// // 注册校验验证码
-//   getCity () {
-//     return  `${HTTP}saleassistant/u/rfirst.aspx`
-//   }
+// 获取个人信息
+  getUSIF () {
+    return  `${HTTP}saleassistant/u/u.aspx`
+  }
+
+// 微信支付接口
+  wxPays () {
+    return  `${HTTP}saleassistant/u/wxpay/wxpayconfig.aspx`
+  }
+
+// 获取充值记录
+  payOrder () {
+    return  `${HTTP}saleassistant/u/payorder.aspx`
+  }
 
 }
 

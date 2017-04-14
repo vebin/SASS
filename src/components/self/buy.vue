@@ -9,42 +9,137 @@
       </div>
       <div class="sn-title">选择卡豆充值数量</div>
       <div class="sn-fl-box flex-wrap row-flex">
-          <div class="sn-item snactive">300</div>
-          <div class="sn-item">300</div>
-          <div class="sn-item">300</div>
-          <div class="sn-item">300</div>
-          <div class="sn-item">300</div>
+          <div v-for="(em,index) in DATA"
+               class="sn-item"
+               @click="likes(index)"
+               :class="{'snactive':id == em.id}">{{em.beanmuch}}</div>
       </div>
       <div class="ms-g-box">
           <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
               <div>支付金额</div>
-              <div class="page ms-gxs-rit flex-wrap row-flex"><i>100.00</i>元</div>
+              <div class="page ms-gxs-rit flex-wrap row-flex"><i>{{howmoney}}</i>元</div>
           </div>
       </div>
       <div class="ms-g-box">
-          <yd-button size="large" type="primary">立即充值</yd-button>
+          <yd-button size="large" 
+            :disabled="!switchs"
+            :type="switchs ? 'primary' : 'disabled'"
+            @click.native="wxpay">立即充值</yd-button>
           <div class="flex-wrap row-flex so-swif">
             <yd-switch v-model="switchs"></yd-switch>
-            <div class="mb-xie" @click.native="showMsg = true">我同意《<i>卡豆充值协议</i>》</div>
+            <div class="mb-xie" @click="jump('/self/buy/ms')">我同意《<i>卡豆充值协议</i>》</div>
           </div>
       </div>
-      <yd-popup v-model="showMsg" position="center" width="80%">
-        
-        <yd-button size="large" type="hollow" @click.native="showMsg = false">关闭</yd-button>
-      </yd-popup>
+      
   </div>
 </template>
 <script>
+import XHR from '../../api/service'
     export default {
       data(){
         return {
-          switchs: false,
-          showMsg: false,
+          switchs:true,
+          howmoney: 0,
+          giftmuch: 0,
+          beanmuch: 0,
+          id:-1,
+          DATA:[]
         }
       },
+      created () {
+          this.$dialog.loading.open('数据加载中…')
+          this.loadingS()
+      },
       methods: {
-        hideMsg () { this.showMsg = !this.showMsg},
-      }
+            loadingS () {
+                let self = this
+                let json = {}
+                XHR.getBeanList(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                        }, 400)
+                        self.DATA = res.data.body
+                        self.howmoney = res.data.body[0].howmoney
+                        self.giftmuch = res.data.body[0].giftmuch
+                        self.beanmuch = res.data.body[0].beanmuch
+                        self.id = res.data.body[0].id
+                    } else {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
+            },
+            likes (inx){
+              this.howmoney = this.DATA[inx].howmoney
+              this.giftmuch = this.DATA[inx].giftmuch
+              this.beanmuch = this.DATA[inx].beanmuch
+              this.id = this.DATA[inx].id
+            },
+            wxpay(){
+                let self = this
+                let json = {}
+                this.$dialog.loading.open('加载中…')
+                json.pid = this.id
+                json.url = window.location.href
+                XHR.wxPays(json)
+                .then(function (res) {
+                    // console.log(res)
+                    if (res.data.state == '1') {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                        }, 400)
+                         wx.config({
+                            debug: false,
+                            appId: res.data.body.appId,
+                            timestamp: res.data.body.timestamp,
+                            nonceStr: res.data.body.nonceStr,
+                            signature: res.data.body.signature,
+                            jsApiList: [
+                                'hideOptionMenu',
+                                'uploadImage',
+                                'chooseImage',
+                                'chooseWXPay',
+                            ]
+                        });
+
+                        wx.chooseWXPay({
+                            timestamp: res.data.body.timestamp,
+                            nonceStr: res.data.body.nonceStr,
+                            package: res.data.body.package,
+                            signType: 'MD5',
+                            paySign: res.data.body.paySign,
+                            success: function (res) {
+                                self.jump('/self')
+                            }
+                        });
+                    } else {
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
+                    }
+                })
+                .catch(function (err) {
+                    
+                })
+            }
+        }
     }
 </script>
 

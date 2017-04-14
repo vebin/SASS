@@ -1,5 +1,5 @@
 <template>
-    <div class="welcome" :class="{hide:hide}">
+    <div class="welcome">
         <img :src="welcomeImg" alt="">
     </div>
 </template>
@@ -18,15 +18,42 @@ export default {
         let ADDRS = JSON.parse(localStorage.getItem('WX_ADDRS')) || ''
         let ADDRSALL = JSON.parse(localStorage.getItem('WX_ADDRSALL')) || ''
         let CARTYPE = JSON.parse(localStorage.getItem('WX_CARTYPE')) || ''
-
         if (ADDRS !== '' && CARTYPE !== '' && ADDRSALL !== '') {
-            this.hide = true
-            this.jump('/clue')
+            setTimeout(() => {
+                this.initView()
+            }, 1500)
         } else {
             this.getDATA()
         }
     },
     methods: {
+        QueryStringByName(name){
+           let result=window.location.search.match(new RegExp("[\?\&]" + name + "=([^\&]+)", "i"))
+           if(result == null || result.length < 0)
+             {
+                return ''
+             }
+            return result[1]
+        },
+        initView(){
+            if(this.QueryStringByName('vc')){
+                if(this.QueryStringByName('st')){
+                    if(this.QueryStringByName('st') == '4004'){
+                        this.jump({path:'/m/app/step3',query:{id:2}})
+                        return false
+                    } else {
+                        this.jump({path:'/m/app/step3',query:{id:3}})
+                        return false
+                    }
+                }
+
+                this.jump('/m/app/welcome')
+                return false
+            }
+            if(this.QueryStringByName('uc')){
+                this.jump('/clue')
+            }
+        },
         getDATA(){
             let self = this
             XHR.getAST()
@@ -46,10 +73,11 @@ export default {
                 
                 localStorage.setItem('WX_ADDRSALL',JSON.stringify(ADDR.data))
                 
-                self.hide = true
-                self.jump('/clue')
+                setTimeout(() => {
+                    self.initView()
+                }, 1500)
             }))
-            .catch(function (err, errs) {
+            .catch(function (err, errs,aderr) {
                 // console.log(err)
                 // self.isNull = false
             })

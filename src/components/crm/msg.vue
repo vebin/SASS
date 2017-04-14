@@ -10,31 +10,29 @@
                     <div class="ms-g-lft">联系方式</div>
                     <div class="page flex-wrap row-flex">
                         <div class="page">{{DATA.tel}}</div>
-                        <div class="v-now"></div>
+                        <a :href="'tel:'+DATA.tel" class="v-now"></a>
                     </div>
                 </div>
-                <div class="ms-g-item flex-wrap row-flex">
-                    <div class="ms-g-lft">提车地区</div>
+                <div v-if="DATA.address !== ''" class="ms-g-item flex-wrap row-flex">
+                    <div class="ms-g-lft">地区</div>
                     <div class="page ms-g-rit">{{DATA.address}}</div>
                 </div>
             </div>
 
-            <div class="ms-g-box">
+            <div v-if="DATA.remark !== ''" class="ms-g-box">
                 <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                     <div class="ms-g-lft">备注</div>
                     <div class="page ms-txt">{{DATA.remark}}</div>
                 </div>
             </div>
 
-            <dl class="m-gj-box">
+            <dl v-if="DATA.clueslist.length > 0" class="m-gj-box">
                 <dt>询价线索</dt>
-                <dd @click="jump('/clue/msg/fmsg')">
-                    <div class="m-gj-txt">设置客户级别为设置客户级别为</div>
-                    <div class="m-gj-time">2017-03-23</div>
-                </dd>
-                <dd>
-                    <div class="m-gj-txt">设置客户级设置客户级别为</div>
-                    <div class="m-gj-time">2017-03-23</div>
+
+                <dd v-for="ems in DATA.clueslist"
+                    @click="jump({path:'/clue/msg',query:{id: ems.id}})">
+                    <div class="m-gj-txt">{{ems.nm}}</div>
+                    <div class="m-gj-time">{{ems.cdatetime}}</div>
                 </dd>
 
             </dl>
@@ -53,8 +51,13 @@ import XHR from '../../api/service'
             return {
                 showAddr: false,
                 showType: false,
-                DATA:{}
+                // DATA:{
+                //     clueslist:[]
+                // }
             }
+        },
+        computed: {
+          DATA () {return this.$store.state.myCrm}
         },
         created () {
             this.$dialog.loading.open('数据加载中…')
@@ -73,10 +76,17 @@ import XHR from '../../api/service'
                             self.$dialog.loading.close()
                         }, 400)
                         
-                        self.DATA = res.data.body
-                        
+                        // self.DATA = res.data.body
+                        self.$store.commit("setMyCrm", res.data.body)
                     } else {
-                        
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
                     }
                 })
                 .catch(function (err) {

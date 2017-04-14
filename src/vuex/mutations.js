@@ -10,6 +10,14 @@ const mutations = {
 
     setMyMsg (state, obj) { state.myMsg = obj},
 
+    setMyCrm (state, obj) { state.myCrm = obj},
+
+    setUSIF (state, obj) { state.USIF = obj},
+
+
+    setUTEL (state, txt) { state.UTEL = txt},
+
+
 
     //设置当前页面名字
     setPageName(state, name) {

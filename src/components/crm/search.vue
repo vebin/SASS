@@ -1,17 +1,26 @@
 <template>
-    <div class="cl-box flex-wrap col-flex">
-        <v-nus v-if="isNull" txt="您还没有购买过卡豆～"></v-nus>
+    <div class="flex-wrap col-flex">
+        <div class="weui-search-bar weui-search-bar_focusing">
+          <form class="weui-search-bar__form">
+            <div class="weui-search-bar__box">
+              <i class="weui-icon-search"></i>
+              <input type="text" v-model.trim="searchIpt" class="weui-search-bar__input"placeholder="搜索姓名或手机号" ref="sipt"/>
+              <a class="weui-icon-clear" @click="searchIpt = ''">x</a>
+            </div>
+
+          </form>
+          <a class="weui-search-bar__cancel-btn" @click="serBtn">搜索</a>
+        </div>
+
+        <v-nus v-if="isNull" txt="没有搜索到哦～"></v-nus>
         <yd-infinitescroll v-if="!isNull" :on-infinite="loadList" class="scroll-wrap">
             <div slot="list" class="all-item-box">
 
 
-                <div v-for="em in DATA" class="c-item-box flex-wrap col-flex">
-                    <div class="se-title">{{em.transaction_id}}</div>
-                    <div class="flex-wrap row-flex">
-                        <div class="page se-txt">购买卡豆：<i class="v-now">{{em.beanmuch}}</i></div>
-                        <div class="page se-txt">实付金额：<i class="se-red">¥ {{em.payfee}}</i></div>
-                    </div>
-                    <div class="se-foot">{{em.transaction_datetime}}</div>
+                <div v-for="em in DATA"
+                    class="crm-item-box"
+                    @click="jump({path:'/crm/msg',query:{id: em.id}})">
+                    <div class="crm-item-txt">{{em.realname}}<i>{{em.tel}}</i></div>
                 </div>
 
 
@@ -24,8 +33,9 @@
             <div slot="loadingTip" class="loading visible load-boxs">
                 <span class="loading-ring"> </span>
             </div>
-
         </yd-infinitescroll>
+
+
     </div>
 </template>
 <script>
@@ -35,19 +45,37 @@ import XHR from '../../api/service'
             return {
                 page: 1,
                 isNull: false,
-                DATA:[]
+
+                DATA:[],
+
+                searchIpt: ''
             }
         },
-        created () {
-            this.$dialog.loading.open('数据加载中…')
-            this.loadList()
+        mounted (){
+            this.$refs.sipt.focus()
         },
         methods: {
+            serBtn(){
+                if(this.searchIpt == ''){
+                    this.$dialog.toast({
+                        mes: '搜索不能为空',
+                        timeout: 2000,
+                        icon: 'error',
+                        callback: () => {
+                            this.$refs.sipt.focus()
+                        }
+                    })
+                    return false
+                }
+                this.$dialog.loading.open('搜索中…')
+                this.loadList()
+            },
             loadList() {
                 let self = this
                 let json = {}
+                json.keyword = this.searchIpt
                 json.pg = this.page
-                XHR.payOrder(json)
+                XHR.getPopList(json)
                 .then(function (res) {
                     // console.log(res)
                     if (res.data.state == '1') {
@@ -63,7 +91,7 @@ import XHR from '../../api/service'
                         } else {
                             window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
                         }
-                        self.DATA.push(...res.data.body.payorderlist)
+                        self.DATA.push(...res.data.body.contactslist)
                         window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
                         if(self.DATA.length == '0'){
                             self.isNull = true
@@ -83,26 +111,14 @@ import XHR from '../../api/service'
                     
                 })
 
-            },
+            }
         }
     }
 </script>
 <style lang="less" scoped>
-.cl-box{width: 100%; height: 100%;}
-
-
-.c-item-box{
-    height: 1.9rem;
-    padding: 0.12rem 0.3rem;
-    border-bottom: 0.02rem solid #eee;
-    background-color: #fff;
+.weui-search-bar{width: 100%; height: 0.88rem;}
+.crm-item-box{background-color: #fff; padding: 0 0.3rem; height: 0.84rem; line-height: 0.84rem; border-bottom:0.02rem solid #eee;}
+.crm-item-txt{ color: #333; font-size: 0.3rem;
+    i{ color: #666; font-size: 0.26rem; padding-left: 0.2rem;}
 }
-
-.se-title,.se-txt,.se-foot{font-size:0.24rem; color: #666;height: 0.6rem; line-height: 0.6rem;overflow: hidden; text-overflow:ellipsis; white-space:nowrap; border-bottom: 0.02rem solid #eee;}
-.se-txt{color:#333;font-size:0.26rem;  border-bottom: 0; padding-top: 0.04rem;}
-.se-foot{border-bottom: 0; height: 0.4rem; line-height: 0.4rem;}
-.se-red{color: red;}
-.v-now{color: #ff6500; font-weight: 500; padding-right: 0.2rem;}
-.v-now:before{ content: '\e602'; font-family:'iconfont'; margin-right: 0.1rem; color: #ff9800;}
-
 </style>

@@ -19,7 +19,9 @@
                 <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                     <div class="ms-g-lft">意向车型</div>
                     <div @click="showTYPE"
-                        class="page ms-g-rit flex-wrap row-flex ms-cell-arrow">{{carType}}</div>
+                        class="page ms-g-rit flex-wrap row-flex ms-cell-arrow">
+                        <em>{{carType}}</em>
+                    </div>
                 </div>
             </div>
             <div class="ms-g-box">
@@ -41,7 +43,7 @@
                 <div class="ms-g-item flex-wrap row-flex">
                     <div class="ms-g-lft">提车地区</div>
                     <div class="page ms-g-rit flex-wrap row-flex ms-cell-arrow"
-                        @click="showADDR">{{address}}</div>
+                        @click="showADDR"><em>{{address}}</em></div>
                 </div>
                 <div class="ms-g-item flex-wrap row-flex">
                     <div class="ms-g-lft">购买台数</div>
@@ -83,11 +85,11 @@
             <div class="page ms-btns" 
             @click="saves">保存</div>
         </div>
-        <yd-popup v-model="showAddr" position="right" width="60%">
+        <yd-popup v-model="showAddr" position="right" width="80%">
             <v-addrs @hides="hideAddr" 
             @act="psnA" @prs="prsA" :pr="prov" :ci="city"></v-addrs>
         </yd-popup>
-        <yd-popup v-model="showType" position="right" width="80%">
+        <yd-popup v-model="showType" position="right" width="60%">
             <v-cartype @hides="hideType" @act="typeidA" :txt="typeid"></v-cartype>
         </yd-popup>
     </div>
@@ -155,39 +157,48 @@ import XHR from '../../api/service'
             saves (){
                 let self = this
                 let json = {}
-                json.id = this.$store.state.myMsg.id
-                json.typeid = this.typeid
-                json.tel = this.tel
-                json.realname = this.name
-                json.address = this.address
-                json.howmuch = this.howmuch
 
-                this.$dialog.loading.open('数据保存中…')
-                XHR.postClues(json)
-                .then(function (res) {
-                    // console.log(res)
-                    if (res.data.state == '1') {
+                if(this.seek(this.tel)){
+                    json.id = this.$store.state.myMsg.id
+                    json.typeid = this.typeid
+                    json.tel = this.tel
+                    json.realname = this.name
+                    json.address = this.address
+                    json.howmuch = this.howmuch
 
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: '保存成功',
-                                timeout: 800,
-                                icon: 'success',
-                                callback: () => {
-                                    self.back()
-                                }
-                            })
-                        }, 300)
+                    this.$dialog.loading.open('数据保存中…')
+                    XHR.postClues(json)
+                    .then(function (res) {
+                        // console.log(res)
+                        if (res.data.state == '1') {
 
-                    } else {
-                        self.$dialog.alert({mes: res.data.errmsg})
-                        self.$dialog.loading.close()
-                    }
-                })
-                .catch(function (err) {
-                    
-                })
+                            setTimeout(() => {
+                                self.$dialog.loading.close()
+                                self.$dialog.toast({
+                                    mes: '保存成功',
+                                    timeout: 800,
+                                    icon: 'success',
+                                    callback: () => {
+                                        self.back()
+                                    }
+                                })
+                            }, 300)
+
+                        } else {
+                            setTimeout(() => {
+                                self.$dialog.loading.close()
+                                self.$dialog.toast({
+                                    mes: res.data.errmsg,
+                                    timeout: 2000,
+                                    icon: 'error'
+                                })
+                            }, 400)
+                        }
+                    })
+                    .catch(function (err) {
+                        
+                    })
+                }
             }
         }
     }

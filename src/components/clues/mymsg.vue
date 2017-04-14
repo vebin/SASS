@@ -50,8 +50,8 @@
             </div>
             <dl v-if="DATA.followup.length > 0" class="m-gj-box">
                 <dt>跟进记录</dt>
-                <dd v-for="ems in DATA.followup"
-                    @click="jump('/clue/msg/fmsg')">
+                <dd v-for="(ems, index) in DATA.followup"
+                    @click="jump({path:'/clue/msg/fmsg',query:{id:index}})">
                     <div class="m-gj-time">{{ems.cdatetime}}</div>
                     <div class="m-gj-txt">备注：{{ems.remark}}</div>
                 </dd>
@@ -59,12 +59,12 @@
             </dl>
         </div>
         <div class="ms-g-ftbox flex-wrap row-flex">
-            <div v-if="false" class="page ms-btns" @click="back">返回</div>
+            <div v-if="DATA.mark == 'F 战败'" class="page ms-btns" @click="back">返回</div>
 
-            <div class="ms-btns ms-btn-bk" @click="back">返回</div>
-            <div class="ms-btns ms-btn-tt" 
+            <div v-if="DATA.mark !== 'F 战败'" class="ms-btns ms-btn-bk" @click="back">返回</div>
+            <div v-if="DATA.mark !== 'F 战败'" class="ms-btns ms-btn-tt" 
                 @click="jump('/clue/msg/form')">编辑</div>
-            <div class="page ms-btns" 
+            <div v-if="DATA.mark !== 'F 战败'" class="page ms-btns" 
                 @click="jump({path:'/clue/msg/fm',query:{id:$route.query.id}})"
                 >添加跟进记录</div>
         </div>
@@ -113,7 +113,14 @@ import XHR from '../../api/service'
                         self.$store.commit("setMyMsg", res.data.body)
                         
                     } else {
-                        
+                        setTimeout(() => {
+                            self.$dialog.loading.close()
+                            self.$dialog.toast({
+                                mes: res.data.errmsg,
+                                timeout: 2000,
+                                icon: 'error'
+                            })
+                        }, 400)
                     }
                 })
                 .catch(function (err) {

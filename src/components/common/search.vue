@@ -1,13 +1,13 @@
 <template>
-  <div id="search">
-    <div class="weui-search-bar" id="search_bar">
+  <div>
+    <div class="weui-search-bar">
       <form class="weui-search-bar__form">
         <div class="weui-search-bar__box">
-          <input type="search" v-model="searchIpt" class="weui-search-bar__input" id="search_input" placeholder="搜索"/>
+          <input type="search" class="weui-search-bar__input" placeholder="搜索"/>
         </div>
-        <label for="search_input" class="weui-search-bar__label" id="search_text">
+        <label for="search_input" class="weui-search-bar__label"  @click="$emit('go')">
             <i class="weui-icon-search"></i>
-            <span>搜索</span>
+            <span><em v-if="txt > 0">共{{txt}}条</em> &nbsp;搜索姓名或手机号</span>
         </label>
       </form>
     </div>
@@ -15,14 +15,10 @@
 </template>
 <script>
     export default {
-        data() {
-            return {
-                searchIpt: ""
-            }
-        },
-        methods: {
-            searchClear() {
-                this.searchIpt = ""
+        props:{
+            txt:{
+                type: Number,
+                default: 0
             }
         }
     }
@@ -128,15 +124,21 @@
     position: absolute;
     left: 10px;
     top: 0;
-    line-height: 28px
+    line-height: 28px;
 }
 
 .weui-search-bar__box .weui-icon-clear {
     position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0 10px;
-    line-height: 28px
+    top: 0.1rem;
+    right: 0.12rem;
+    height: 1.5em;
+    width: 1.5em;
+    border-radius: 1.5rem;
+    background-color: #eee;
+    line-height: 1.5em;
+    text-align: center;
+    font-size: 0.24rem;
+    color: #333;
 }
 
 .weui-search-bar__label {
@@ -170,8 +172,9 @@
     display: none;
     margin-left: 10px;
     line-height: 28px;
+    font-size: 0.26rem;
     color: #09bb07;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .weui-search-bar__input:not(:valid)~.weui-icon-clear {

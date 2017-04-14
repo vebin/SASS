@@ -4,13 +4,13 @@
 // 后端 API 地址，最好以 http(s):// 打头
 export const HTTP_DEV = 'http://trailer-api/'
 
-export const HTTPS = ''
+export const HTTPS = 'http://didi.360che.com/trailer-api/'
 
 export const DEV_URL = ''
 
 export const PRO_URL = ''
 
-export const DEBUG = true
+export const DEBUG = false
 
 
 

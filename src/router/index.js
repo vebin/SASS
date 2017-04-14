@@ -68,6 +68,13 @@ const routes = [
         }
     },
     {
+        path: '/clue/m/search',
+        name: "",
+        components: {
+            "subPage": resolve => require(["../components/clues/search.vue"], resolve)
+        }
+    },
+    {
         path: '/clue/msg/fmsg',
         components: { 
             "subPage": resolve => require(["../components/clues/fmsg.vue"], resolve)
@@ -102,6 +109,13 @@ const routes = [
         }
     },
     {
+        path: '/crm/m/search',
+        name: "",
+        components: {
+            "subPage": resolve => require(["../components/crm/search.vue"], resolve)
+        }
+    },
+    {
         path: '/crm/msg/form',
         components: { 
             "subPage": resolve => require(["../components/crm/form.vue"], resolve)
@@ -127,6 +141,12 @@ const routes = [
         path: '/self/buy/record',
         components: { 
             "subPage": resolve => require(["../components/self/items.vue"], resolve)
+        }
+    }, 
+    {
+        path: '/self/buy/ms',
+        components: { 
+            "subPage": resolve => require(["../components/self/ms.vue"], resolve)
         }
     }, 
 

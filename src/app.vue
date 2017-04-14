@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <v-welcome></v-welcome>
+        <!-- <v-welcome></v-welcome> -->
         <div class="outter flex-wrap col-flex" :class="{'hideLeft':$route.path.split('/').length>2}">
             <!--门面页 “线索” “联系人” “我的”-->
             <section class="page">
@@ -9,7 +9,8 @@
                 </keep-alive>
             </section>
             <!--底部导航 路由 -->
-            <footer class="app-footer">
+            <!-- <v-nus v-if="$route.path == '/'" txt="操作异常～"></v-nus> -->
+            <footer v-if="$route.path !== '/'" class="app-footer">
                 <v-nav></v-nav>
             </footer>
         </div>
