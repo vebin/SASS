@@ -3,7 +3,7 @@
         <!-- <v-welcome></v-welcome> -->
         <div class="outter flex-wrap col-flex" :class="{'hideLeft':$route.path.split('/').length>2}">
             <!--门面页 “线索” “联系人” “我的”-->
-            <section class="page">
+            <section class="page PHT">
                 <keep-alive>
                     <router-view name="default"></router-view>
                 </keep-alive>

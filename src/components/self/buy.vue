@@ -92,7 +92,7 @@ import XHR from '../../api/service'
                 let json = {}
                 this.$dialog.loading.open('加载中…')
                 json.pid = this.id
-                json.url = window.location.href
+                json.url = encodeURIComponent(window.location.href.split('#')[0])
                 XHR.wxPays(json)
                 .then(function (res) {
                     // console.log(res)
@@ -108,8 +108,6 @@ import XHR from '../../api/service'
                             signature: res.data.body.signature,
                             jsApiList: [
                                 'hideOptionMenu',
-                                'uploadImage',
-                                'chooseImage',
                                 'chooseWXPay',
                             ]
                         });

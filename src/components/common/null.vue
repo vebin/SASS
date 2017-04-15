@@ -1,5 +1,5 @@
 <template>
-    <div class="page flex-wrap col-flex midCenter">
+    <div class="page flex-wrap col-flex midCenter PHT">
         <div class="nul-icos"></div>
         <div class="nul-txt">{{txt}}</div>
     </div>

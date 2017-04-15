@@ -2,14 +2,14 @@
     <div class="fl-pop-box flex-wrap col-flex">
         <div class="fl-pop-head"
             @click="$emit('hides')">地区</div>
-        <div class="page flex-wrap row-flex">
-            <ul class="page page-box">
+        <div class="page flex-wrap row-flex PHT">
+            <ul class="scroll-wrap">
                 <li v-for="em in DATA" 
                     class="fl-pop-txt"
                     @click="prA(em.cs,em.sn,em.nm)"
                     :class="{'flpopactive': pr == em.sn}">{{em.nm}}</li>
             </ul>
-            <ul v-if="SALL.length>0" class="page page-box fl-pop-right">
+            <ul v-if="SALL.length>0" class="scroll-wrap fl-pop-right">
                 <li v-for="em in SALL"
                     class="fl-pop-txt"
                     @click="ciA(em.sn,em.nm)"

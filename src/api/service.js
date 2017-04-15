@@ -36,7 +36,7 @@ class XHR {
 /*---------------------VC------------------------*/
   getWxConfig (json) {
     json.vc = SEVC
-    json.url = `https://${window.location.host}${window.location.pathname}?vc=${SEVC}`
+    json.url = window.location.href.split('#')[0]
     return axios.get(API.getWxConfig(),{params:json})
   }
 

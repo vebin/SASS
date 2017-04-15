@@ -54,7 +54,6 @@ import XHR from '../../api/service'
 
                 name: '',
                 tel: '',
-                address:'',
                 remark:'',
 
                 levelTxt: '请选择地区'
@@ -66,10 +65,10 @@ import XHR from '../../api/service'
         created () {
             let add = this.$route.query.id || ''
             if(add == ''){
-                this.address = this.$store.state.myCrm.address
                 this.name = this.$store.state.myCrm.realname
                 this.tel = this.$store.state.myCrm.tel
                 this.remark = this.$store.state.myCrm.remark
+                this.levelTxt = this.$store.state.myCrm.address
             }
         },
         methods: {

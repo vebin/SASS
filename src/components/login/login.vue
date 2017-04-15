@@ -116,6 +116,7 @@
             },
             nextAC (){
                 let self = this
+                let urls
                 let json = {}
                 this.$dialog.loading.open('验证中...')
                 json.tel = this.tel
@@ -127,7 +128,9 @@
                         setTimeout(() => {
                             self.$dialog.loading.close()
                             self.$store.commit("setUTEL",self.tel)
-                            jump('/')
+                            urls = window.location.href.split('?')[0]
+                            window.location.href = `${urls}?uc=${res.data.body}#/clue`
+                            // self.jump('/')
                         }, 400)
                     } else {
                         setTimeout(() => {

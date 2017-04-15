@@ -106,5 +106,5 @@ import XHR from '../../api/service'
     i{ color: #666; font-size: 0.26rem;line-height: 0.25rem;}
 }
 
-.addPep{width: 0.88rem; height: 0.88rem; border-radius: 0.88rem; background-color: rgba(11,185,8,.8); color: #fff;font-size: 0.8rem;text-align: center; position: absolute; bottom: 2rem;right: 0.3rem; line-height: 0.88rem;z-index: 33;font-weight: 200;}
+.addPep{width: 0.88rem; height: 0.88rem; border-radius: 0.88rem; background-color: rgba(11,185,8,.8); color: #fff;font-size: 0.8rem;text-align: center; position: absolute; bottom: 2rem;right: 0.3rem; line-height: 0.88rem;z-index: 33;font-weight: 200;-webkit-transform: translateZ(0);}
 </style>

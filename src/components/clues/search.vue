@@ -88,6 +88,7 @@ import XHR from '../../api/service'
                     })
                     return false
                 }
+                this.DATA = []
                 this.$dialog.loading.open('搜索中…')
                 this.loadList()
             },

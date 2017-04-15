@@ -2,7 +2,7 @@
     <div class="fl-pop-box flex-wrap col-flex">
         <div class="fl-pop-head"
             @click="$emit('hides')">类别</div>
-        <div class="page flex-wrap row-flex">
+        <div class="page flex-wrap row-flex PHT">
             <ul class="page page-box">
                 <li v-for="em in DATA" 
                 class="fl-pop-txt"
