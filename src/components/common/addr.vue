@@ -2,7 +2,7 @@
     <div class="fl-pop-box flex-wrap col-flex">
         <div class="fl-pop-head"
             @click="$emit('hides')">地区</div>
-        <ul class="page page-box">
+        <ul class="scroll-wrap page-box">
             <li v-for="em in DATA" 
                 class="fl-pop-txt"
                 @click="$emit('act',em.sn)"

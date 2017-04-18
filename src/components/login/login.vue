@@ -1,6 +1,6 @@
 <template>
     <div class="page flex-wrap col-flex">
-        <div class="logo-box page flex-wrap col-flex mx-Center">
+        <div class="page flex-wrap col-flex mx-Center">
 
             <div class="step-input-box flex-wrap col-flex">
                 <div class="ms-g-box">

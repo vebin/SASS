@@ -1,6 +1,6 @@
 <template>
-    <div class="page flex-wrap col-flex">
-        <div class="logo-box flex-wrap col-flex page mx-Center">
+    <div class="page flex-wrap col-flex PHT">
+        <div class="scroll-wrap mx-Center PHT">
             <div class="step-box">
                 <div class="step-min flex-wrap row-flex">
                     <div class="step-item step-active">注册</div>
@@ -8,7 +8,7 @@
                     <div class="step-item">审核</div>
                 </div>
             </div>
-            <div class="step-input-box scroll-wrap">
+            <div class="step-input-box PHT">
                 <div class="ms-g-box">
                     <div class="ms-g-item flex-wrap row-flex">
                         <div class="ms-g-lft"><i>*</i>真是姓名</div>
@@ -36,7 +36,7 @@
                 <div class="ms-g-box">
                     <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                         <div class="ms-g-lft">上传身份证</div>
-                        <div class="page flex-wrap col-flex">
+                        <div class="page flex-wrap col-flex PHT">
                             <img v-for="em in img"
                                 :src="em" class="pics"/>
                             <div v-if="isAdd" class="addPic" @click="addImage">上传图片</div>
@@ -150,9 +150,9 @@ import XHR from '../../api/service'
 </script>
 <style lang="less" scoped>
 .page{background-color: #fff;}
-.ms-g-box{width: 100%;padding: 0;}
+.ms-g-box{width: 100%;padding: 0; min-height: 0.76rem; height: auto;}
 .step-input-box{padding: 0 0.3rem; width: 100%;}
-
+.ms-g-nobor{height: auto;}
 .fr-input{
     height: 100%;
     width: 100%;

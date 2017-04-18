@@ -1,6 +1,6 @@
 <template>
     <div class="page flex-wrap col-flex">
-        <div class="logo-box page flex-wrap col-flex mx-Center">
+        <div class="page flex-wrap col-flex mx-Center">
             <div class="step-box">
                 <div class="step-min flex-wrap row-flex">
                     <div class="step-item step-active">注册</div>
