@@ -15,7 +15,7 @@
 <script>
     export default {
         props:{
-            txt: Number
+            txt: [Number,String]
         },
         computed: {
           DATA () {return this.$store.state.carType}

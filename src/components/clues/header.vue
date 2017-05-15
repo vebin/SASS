@@ -1,9 +1,9 @@
 <template>
   <div id="wx-header">
     <div :class="{'active': clueNav == '0'}"
-    @click="navs(0)">线索池</div>
+    @click="navs(0)">我的线索</div>
     <div :class="{'active': clueNav == '1'}"
-    @click="navs(1)">我的线索</div>
+    @click="navs(1)">抢购线索</div>
   </div>
 </template>
 <script>

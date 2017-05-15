@@ -1,13 +1,15 @@
 <template>
     <div class="fl-pop-box flex-wrap col-flex">
         <div class="fl-pop-head"
-            @click="$emit('hides')">地区</div>
-        <ul class="scroll-wrap page-box">
-            <li v-for="em in DATA" 
+            @click="$emit('hides')">类别</div>
+        <div class="page flex-wrap row-flex PHT">
+            <ul class="page page-box">
+                <li v-for="em in DATA" 
                 class="fl-pop-txt"
                 @click="onAdd(em.sn)"
                 :class="isArray(em.sn)">{{em.nm}}</li>
-        </ul>
+            </ul>
+        </div>
         <div class="ms-g-ftbox flex-wrap row-flex">
             <div class="page ms-btns ms-btn-bk" @click="onNull">重置</div>
             <div class="page ms-btns"
@@ -23,10 +25,10 @@
             }
         },
         created () {
-            this.txt = this.$store.state.psn.length > 0 ? this.$store.state.psn.split(',') : []
+            this.txt = this.$store.state.typeid.length > 0 ? this.$store.state.typeid.split(',') : []
         },
         computed: {
-          DATA () {return this.$store.state.addrs}
+          DATA () {return this.$store.state.carType}
         },
         methods:{
             isTrue(id,obj){
@@ -47,7 +49,7 @@
                 }
             },
             onSH(){
-                this.$store.commit("setPsn", this.txt.join(","))
+                this.$store.commit("setTypeId", this.txt.join(","))
                 this.$emit('act')
             },
             onNull(){
@@ -58,6 +60,6 @@
 </script>
 
 <style lang="less" scoped>
-    .page-box{padding-bottom: 40px;}
+.page-box{padding-bottom: 40px;}
     .ms-btn-bk{background-color: #f5f5f5; color: #666;}
 </style>

@@ -44,7 +44,12 @@ const routes = [
             "subPage": resolve => require(["../components/isok.vue"], resolve)
         }
     },
-
+    {
+        path: '/iserr',
+        components: { 
+            "subPage": resolve => require(["../components/iserr.vue"], resolve)
+        }
+    },
 
     {
         path: '/clue',
@@ -65,6 +70,14 @@ const routes = [
         components: {
             "default": resolve => require(["../components/items.vue"], resolve),
             "subPage": resolve => require(["../components/clues/mymsg.vue"], resolve)
+        }
+    },
+    {
+        path: '/clue/sold',
+        name: "",
+        components: {
+            "default": resolve => require(["../components/items.vue"], resolve),
+            "subPage": resolve => require(["../components/clues/sold.vue"], resolve)
         }
     },
     {
@@ -135,6 +148,14 @@ const routes = [
         components: {
             "default": resolve => require(["../components/self/index.vue"], resolve),
             "subPage": resolve => require(["../components/self/buy.vue"], resolve)
+        }
+    },
+    {
+        path: '/self/notice',
+        name: "",
+        components: {
+            "default": resolve => require(["../components/self/index.vue"], resolve),
+            "subPage": resolve => require(["../components/self/notice.vue"], resolve)
         }
     },
     {

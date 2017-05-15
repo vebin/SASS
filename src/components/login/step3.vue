@@ -13,25 +13,25 @@
             <div v-if="step == '1'" class="step-input-box page flex-wrap col-flex midCenter">
                 <div class="nul-icos"></div>
                 <div class="nul-txt">您的注册申请提交成功，请耐心等待</div>
-                <div class="nul-txt">如有疑问，请<i>联系客服</i>咨询</div>
+                <div class="nul-txt">如有疑问，请<a href="tel:13041097429">联系客服</a>咨询</div>
             </div>
 
 
             <div v-if="step == '2'" class="step-input-box page flex-wrap col-flex midCenter">
                 <div class="ffm ico-sell"></div>
                 <div class="nul-txt">您的注册申请正在审核中，请耐心等待</div>
-                <div class="nul-txt">如有疑问，请<i>联系客服</i>咨询</div>
+                <div class="nul-txt">如有疑问，请<a href="tel:13041097429">联系客服</a>咨询</div>
             </div>
 
 
             <div v-if="step == '3'" class="step-input-box page flex-wrap col-flex midCenter">
                 <div class="ffm ico-nulls"></div>
                 <div class="nul-txt">您的注册申请审核未通过，请<i>重新提交</i>信息</div>
-                <div class="nul-txt">如有疑问，请<i>联系客服</i>咨询</div>
+                <div class="nul-txt">如有疑问，请<a href="tel:13041097429">联系客服</a>咨询</div>
             </div>
         </div>
         <div class="step-fooot flex-wrap row-flex">
-            <div class="wel-fooot">联系客服</div>
+            <a href="tel:13041097429" class="wel-fooot">联系客服</a>
             <div class="wel-fooot" @click="jump('/m/app/login')">绑定已有帐号</div>
         </div>
     </div>
@@ -58,7 +58,7 @@
 
 
 .nul-icos:before{content: "\E601"; font-family:YDUI-INLAY; color: #0bb908; font-size: 1.4rem;}
-.nul-txt{ font-size: 0.32rem; color: #666;margin-top: 0.2rem; font-weight: 500; i{color: #2196f3;}}
+.nul-txt{ font-size: 0.32rem; color: #666;margin-top: 0.2rem; font-weight: 500; a{color: #2196f3;}}
 
 .ico-sell,.ico-nulls{font-size: 1.4rem; color: #999;}
 

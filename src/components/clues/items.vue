@@ -3,9 +3,9 @@
         <header class="app-header">
             <v-header></v-header>
         </header>
-        <div v-if="false" class="flex-wrap row-flex midCenter cl-nav">
-            <div class="page midCenter">综合</div>
-            <div class="page midCenter">精品</div>
+        <div class="flex-wrap row-flex midCenter cl-nav">
+            <div v-if="false" class="page midCenter">综合</div>
+            <div v-if="false" class="page midCenter">精品</div>
             <div class="page midCenter flex-wrap row-flex m-v"
                 @click="showADDR">地区<i></i></div>
             <div class="page midCenter flex-wrap row-flex m-v"
@@ -15,34 +15,33 @@
         <yd-infinitescroll v-if="!isNull" :on-infinite="loadList" class="scroll-wrap">
             <div slot="list" class="all-item-box">
 
-                <div v-for="em in DATA"
+                <div v-for="(em,index) in DATA"
                     class="c-item-box flex-wrap col-flex"
-                    @click="jump({path:'/clue/buy',query:{id: em.id}})">
+                    @click="goMsg(em.id,index)">
                     <div class="flex-wrap row-flex mx-Center">
                         <div v-if="em.mark !== ''" class="c-str">{{em.mark}}</div>
                         <div class="page c-title">{{em.title}}</div>
                     </div>
                     <div class="flex-wrap row-flex">
-                        <div class="page c-txt">{{em.address}}</div>
-                        <div class="page c-txt">{{em.uname}} &nbsp;&nbsp;&nbsp;&nbsp;{{em.showdatetime}}</div>
+                        <div class="page c-txt">{{em.address}} &nbsp;&nbsp;&nbsp;{{em.uname}}</div>
+                        <div class="page c-txt c-right-txt">{{em.showdatetime}}</div>
                     </div>
-                    <div class="page flex-wrap row-flex">
+                    <div class="page flex-wrap row-flex"  style="overflow:visible">
                         <div class="page flex-wrap row-flex">
                             <div class="page flex-wrap row-flex mx-Center">
                                 <div v-for="ems in em.tag"
-                                    class="v-name">{{ems}}</div>
+                                    class="v-names">{{ems}}</div>
                             </div>
                         </div>
-                        <div class="page flex-wrap row-flex">
-                            <div class="page flex-wrap row-flex fx-end">
-                                <div class="v-now">{{em.salemoney}}</div>
-                                <div class="v-old">{{em.salemoney_pre}}</div>
+                        <div class="page flex-wrap row-flex" style="overflow:visible">
+                            <div class="page flex-wrap row-flex fx-end" style="overflow:visible">
+                                <!-- <div class="v-now">{{em.salemoney}}</div>
+                                <div class="v-old">{{em.salemoney_pre}}</div> -->
+                               <div class="v-name" :class="{'isRed': em.isread == 0}" style="margin:0">点击查看</div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
 
             </div>
 
@@ -55,11 +54,12 @@
             </div>
 
         </yd-infinitescroll>
-        <yd-popup v-model="showAddr" position="right" width="60%">
-            <v-addr @hides="hideAddr" @act="psnA" :txt="psn"></v-addr>
+        <div class="addPep" @click="jump('/clue/sold')">已售</div>
+        <yd-popup v-model="showAddr" position="right" width="66%">
+            <v-addr @hides="hideAddr" @act="psnA"></v-addr>
         </yd-popup>
-        <yd-popup v-model="showType" position="right" width="60%">
-            <v-cartype @hides="hideType" @act="typeidA" :txt="typeid"></v-cartype>
+        <yd-popup v-model="showType" position="right" width="66%">
+            <v-shtype @hides="hideType" @act="typeidA"></v-shtype>
         </yd-popup>
     </div>
 </template>
@@ -68,15 +68,24 @@ import XHR from '../../api/service'
     export default {
         data() {
             return {
+                inx:-1,         // 记录是否被购买成功
                 showAddr: false,
                 showType: false,
                 page: 1,
                 isNull: false,
 
-                psn:-1,
-                typeid:-1,
+                psn: [],
+                typeid:[],
 
                 DATA:[]
+            }
+        },
+        watch: {
+            "$route" (to, from) {
+                if( to.path == '/clue' && this.$store.state.clueNav == '0' && this.$store.state.isbuy) {
+                    this.DATA.splice(this.inx,1)
+                    this.$store.commit("isBuy", false)
+                }
             }
         },
         created () {
@@ -86,13 +95,21 @@ import XHR from '../../api/service'
         },
 
         methods: {
-            psnA (id){
-                this.psn = id
+            psnA (){
+                let json = {}
+                json.pg = 1
+                json.psn = this.$store.state.psn
+                json.typeid = this.$store.state.typeid
                 this.hideAddr()
+                this.loadList(json)
             },
-            typeidA (id){
-                this.typeid = id
+            typeidA (){
+                let json = {}
+                json.pg = 1
+                json.psn = this.$store.state.psn
+                json.typeid = this.$store.state.typeid
                 this.hideType()
+                this.loadList(json)
             },
             showADDR () {
                 let ADDRS = JSON.parse(localStorage.getItem('WX_ADDRS')) || []
@@ -111,13 +128,18 @@ import XHR from '../../api/service'
                   
             // /* 单次请求数据完毕 */
             // window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-            loadList() {
+            loadList(objs) {
                 let self = this
                 let json = {}
                 json.pg = this.page
-                json.psn = ''
-                json.typeid = ''
-                json.grade = ''
+                json.psn = this.$store.state.psn
+                json.typeid = this.$store.state.typeid
+                // json.grade = ''
+                if(objs){
+                    json = objs
+                    this.page = 1
+                    this.DATA = []
+                }
                 XHR.getAllClues(json)
                 .then(function (res) {
                     // console.log(res)
@@ -125,35 +147,33 @@ import XHR from '../../api/service'
                         setTimeout(() => {
                             self.$dialog.loading.close()
                         }, 400)
-                        if(res.data.body.pagerecord >= 10 && res.data.body.pagerecord !== 0){
+                        if(res.data.body.pagerecord > 0){
+                            self.isNull = false
                             if( self.page == res.data.body.pagecount){
                                 window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+                                self.DATA.push(...res.data.body.clueslist)
                             } else {
+                                window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
                                 self.page++
+                                self.DATA.push(...res.data.body.clueslist)
                             }
                         } else {
                             window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
-                        }
-                        self.DATA.push(...res.data.body.clueslist)
-                        window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-                        if(self.DATA.length == '0'){
                             self.isNull = true
                         }
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {
                     
                 })
 
+            },
+            goMsg(ids,index){
+                this.inx = parseInt(index)
+                this.$set(this.DATA[index],'isread',1)
+                this.jump({path:'/clue/buy',query:{id: ids}})
             },
             WXCODE(){
                 let self = this
@@ -165,7 +185,7 @@ import XHR from '../../api/service'
                     if (res.data.state == '1') {
                         localStorage.setItem('WX_CONFIGXS',JSON.stringify(res.data.body))
                     } else {
-                        
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {
@@ -208,13 +228,27 @@ import XHR from '../../api/service'
     background-color: #fff;
 }
 .c-str{height: 0.4rem; line-height: 0.4rem; border:0.02rem solid #2196f3; color: #2196f3; border-radius: 4px; margin-right: 0.1rem; font-size: 0.26rem; width: 0.76rem; text-align: center;}
-.c-title,.c-txt{font-size:0.33rem; color: #333;height: 0.6rem; line-height: 0.6rem;overflow: hidden; text-overflow:ellipsis; white-space:nowrap;}
-.c-txt{font-size: 0.24rem; color:#666; height: 0.44rem; line-height: 0.44rem;}
-
-.v-name{height: 0.4rem; line-height: 0.4rem; padding: 0 0.08rem;border:0.02rem solid #ccc; color: #666; border-radius: 4px; margin-right: 0.1rem; font-size: 0.24rem;}
-
+.c-title,.c-txt{font-size:0.34rem; color: #333;height: 0.6rem; line-height: 0.6rem;overflow: hidden; text-overflow:ellipsis; white-space:nowrap;}
+.c-txt{font-size: 0.26rem; color:#666; height: 0.44rem; line-height: 0.44rem;}
+.c-right-txt{text-align: right;}
+.v-names{height: 0.4rem; line-height: 0.4rem; padding: 0 0.08rem;border:0.02rem solid #ccc; color: #666; border-radius: 4px; margin-right: 0.1rem; font-size: 0.24rem;}
+.v-name{height: 0.5rem; line-height: 0.5rem; padding: 0 0.16rem;border:0.02rem solid #ccc; color: #444; border-radius: 4px; margin-right: 0.1rem; font-size: 0.24rem; position: relative;}
+.isRed:after{
+    content: ' ';
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    background-color: red;
+    display: inline-block;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    z-index: 55;
+}
 .fx-end{ justify-content:flex-end; padding-bottom: 0.08rem;}
-.v-now{font-size: 0.4rem; color: #ff6500; font-weight: 500; padding-right: 0.2rem;}
+.v-now{font-size: 0.4rem; color: #ff6500; font-weight: 500;}
 .v-now:before{ content: '\e602'; font-family:'iconfont'; margin-right: 0.1rem; color: #ff9800;}
 .v-old{font-size: 0.3rem; color: #666;font-weight: 500;text-decoration:line-through;}
+
+.addPep{width: 0.88rem; height: 0.88rem; border-radius: 0.88rem; background-color: rgba(255,152,0,.85); color: #fff;font-size: 0.26rem;text-align: center; position: absolute; bottom: 2rem;right: 0.3rem; line-height: 0.8rem;z-index: 33;font-weight: 400;-webkit-transform: translateZ(0); border-width: 3px;border-style: solid; border-color: rgba(255,106,0,.2);}
 </style>

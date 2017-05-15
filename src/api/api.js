@@ -71,7 +71,30 @@ class API {
   postClues () {
     return  `${HTTP}saleassistant/clues_u/clues_edit.aspx`
   }
-
+// 最新售卖列表
+  soldList () {
+    return  `${HTTP}saleassistant/clues/lastbuy/clues_list.aspx`
+  }
+// 新消息提醒
+  noticeHot () {
+    return  `${HTTP}saleassistant/clues/lastbuy/clues_last.aspx`
+  }
+// 获取最后一条系统消息的主键id
+  sysmsgId () {
+    return  `${HTTP}saleassistant/u/sysmsg/lastid.aspx`
+  }
+// 系统消息列表
+  sysmsgList () {
+    return  `${HTTP}saleassistant/u/sysmsg/msglist.aspx`
+  }
+// 系统消息详情
+  sysmsgMsg () {
+    return  `${HTTP}saleassistant/u/sysmsg/msgdetail.aspx`
+  }
+// 推荐线索列表
+  recommList () {
+    return  `${HTTP}saleassistant/clues/recommend.aspx`
+  }
 
 
 
@@ -106,7 +129,10 @@ class API {
   payOrder () {
     return  `${HTTP}saleassistant/u/payorder.aspx`
   }
-
+// 获取最后一条系统消息
+  lastNot () {
+    return  `${HTTP}saleassistant/u/sysmsg/lastid.aspx`
+  }
 }
 
 // 实例化后再导出

@@ -163,7 +163,9 @@ import XHR from '../../api/service'
                     json.typeid = this.typeid
                     json.tel = this.tel
                     json.realname = this.name
-                    json.address = this.address
+                    // json.address = this.address
+                    json.provincesn = this.prov
+                    json.citysn = this.city
                     json.howmuch = this.howmuch
 
                     this.$dialog.loading.open('数据保存中…')
@@ -185,14 +187,7 @@ import XHR from '../../api/service'
                             }, 300)
 
                         } else {
-                            setTimeout(() => {
-                                self.$dialog.loading.close()
-                                self.$dialog.toast({
-                                    mes: res.data.errmsg,
-                                    timeout: 2000,
-                                    icon: 'error'
-                                })
-                            }, 400)
+                            XHR.isErr(res,self)
                         }
                     })
                     .catch(function (err) {

@@ -4,6 +4,7 @@ import search from './common/search'
 import addr from './common/addr'
 import addrs from './common/addrs'
 import cartype from './common/cartype'
+import shtype from './common/shtype'
 import scnav from './common/scnav'
 import level from './common/level'
 import nus from './common/null'
@@ -12,4 +13,4 @@ import header from './clues/header'
 
 
 
-export default {welcome, header, nav, search, addr, addrs, cartype, scnav, level, nus  }
+export default {welcome, header, nav, search, addr, addrs, cartype, scnav, level, nus, shtype  }

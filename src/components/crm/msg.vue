@@ -79,14 +79,7 @@ import XHR from '../../api/service'
                         // self.DATA = res.data.body
                         self.$store.commit("setMyCrm", res.data.body)
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {

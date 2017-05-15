@@ -14,11 +14,18 @@
                     @click="jump('/self/buy')">卡豆充值</div>
             </div>
         </div>
-        <div v-if="false" class="ms-g-box">
+        <div class="ms-g-box">
+            <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
+                <div class="ms-gx-lft ico-notice"></div>
+                <div class="page ms-g-rit flex-wrap row-flex ms-cell-arrow" style="position:relative; overflow:visible"
+                    @click="jump('/self/notice')">系统消息<i class="new-msgdot" v-show="$store.state.headerStatus"></i></div>
+            </div>
+        </div>
+        <div class="ms-g-box">
             <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                 <div class="ms-gx-lft ico-why"></div>
-                <div class="page ms-g-rit flex-wrap row-flex ms-cell-arrow"
-                    @click="showType = true">使用帮助</div>
+                <a class="page ms-g-rit flex-wrap row-flex ms-cell-arrow"
+                    href="http://a.xiumi.us/stage/v5/36Pll/41269030#/">使用帮助</a>
             </div>
         </div>
     </div>
@@ -53,14 +60,7 @@ import XHR from '../../api/service'
                         self.$store.commit("setUSIF", res.data.body)
                         
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {
@@ -82,4 +82,15 @@ import XHR from '../../api/service'
 
     .v-now{font-size: 0.4rem; color: #ff6500; font-weight: 500; padding-right: 0.2rem;}
     .v-now:before{ content: '\e602'; font-family:'iconfont'; margin-right: 0.1rem; color: #ff9800;}
+
+    .new-msgdot{
+        position: absolute;
+        top: 7px;
+        right: -7px;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: red;
+    }
 </style>

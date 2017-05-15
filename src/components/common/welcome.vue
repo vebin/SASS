@@ -21,7 +21,7 @@ export default {
         if (ADDRS !== '' && CARTYPE !== '' && ADDRSALL !== '') {
             setTimeout(() => {
                 this.initView()
-            }, 1500)
+            }, 800)
         } else {
             this.getDATA()
         }
@@ -36,9 +36,10 @@ export default {
             return result[1]
         },
         initView(){
-            if(this.QueryStringByName('vc')){
-                if(this.QueryStringByName('st')){
-                    if(this.QueryStringByName('st') == '4004'){
+            if(this.QueryStringByName('vc').length > 0){
+                let sts = this.QueryStringByName('st')
+                if(sts > 0){
+                    if(sts == '4004'){
                         this.jump({path:'/m/app/step3',query:{id:2}})
                         return false
                     } else {
@@ -46,11 +47,10 @@ export default {
                         return false
                     }
                 }
-
                 this.jump('/m/app/welcome')
                 return false
             }
-            if(this.QueryStringByName('uc')){
+            if(this.QueryStringByName('uc').length > 0){
                 this.jump('/clue')
             }
         },
@@ -75,7 +75,7 @@ export default {
                 
                 setTimeout(() => {
                     self.initView()
-                }, 1500)
+                }, 800)
             }))
             .catch(function (err, errs,aderr) {
                 // console.log(err)

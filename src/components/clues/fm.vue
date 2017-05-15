@@ -56,7 +56,14 @@ import XHR from '../../api/service'
                 
                 let self = this
                 let json = {}
-
+                if(this.leveNB == -1 && this.remark == ''){
+                    this.$dialog.notify({
+                        mes: '请至少填写一项信息',
+                        timeout: 4000,
+                        // callback: () => {}
+                    })
+                    return false
+                }
                 json.id = this.$route.query.id
                 if(this.leveNB !== -1){
                     json.mark = this.leveNB
@@ -81,14 +88,7 @@ import XHR from '../../api/service'
                         }, 300)
 
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {

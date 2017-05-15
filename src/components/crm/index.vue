@@ -6,11 +6,14 @@
             <div slot="list" class="all-item-box">
 
 
-                <div v-for="em in DATA"
-                    class="crm-item-box"
-                    @click="jump({path:'/crm/msg',query:{id: em.id}})">
-                    <div class="crm-item-txt">{{em.realname}}</div>
-                    <div class="crm-item-txt"><i>{{em.tel}}</i></div>
+                <div v-for="em in DATA" class="crm-item-box">
+                    <div 
+                    @click="jump({path:'/crm/msg',query:{id: em.id}})" 
+                    class="crm-item-txt">{{em.realname}}</div>
+                    <div 
+                    @click="jump({path:'/crm/msg',query:{id: em.id}})" 
+                    class="crm-item-txt"><i>{{em.tel}}</i></div>
+                    <a :href="'tel:'+em.tel" class="v-now"></a>
                 </div>
 
 
@@ -65,30 +68,23 @@ import XHR from '../../api/service'
                         setTimeout(() => {
                             self.$dialog.loading.close()
                         }, 400)
-                        if(res.data.body.pagerecord >= 10 && res.data.body.pagerecord !== 0){
+                        self.allNumber = res.data.body.recordtotal
+                        if(res.data.body.pagerecord > 0){
+                            self.isNull = false
                             if( self.page == res.data.body.pagecount){
                                 window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
+                                self.DATA.push(...res.data.body.contactslist)
                             } else {
+                                window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
                                 self.page++
+                                self.DATA.push(...res.data.body.contactslist)
                             }
                         } else {
                             window.$yduiBus.$emit('ydui.infinitescroll.loadedDone')
-                        }
-                        self.allNumber = res.data.body.recordtotal
-                        self.DATA.push(...res.data.body.contactslist)
-                        window.$yduiBus.$emit('ydui.infinitescroll.finishLoad')
-                        if(self.DATA.length == '0'){
                             self.isNull = true
                         }
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {
@@ -101,10 +97,13 @@ import XHR from '../../api/service'
 </script>
 <style lang="less" scoped>
 .cl-box{width: 100%; height: 100%;}
-.crm-item-box{background-color: #fff; padding: 0 0.3rem; height: 1rem; line-height: 0.4rem; border-bottom:0.02rem solid #eee; padding-top: 0.1rem;}
+.crm-item-box{background-color: #fff; padding: 0 0.3rem; height: 1rem; line-height: 0.4rem; border-bottom:0.02rem solid #eee; padding-top: 0.1rem; position: relative;}
 .crm-item-txt{ color: #333; font-size: 0.3rem;
     i{ color: #666; font-size: 0.26rem;line-height: 0.25rem;}
 }
 
-.addPep{width: 0.88rem; height: 0.88rem; border-radius: 0.88rem; background-color: rgba(11,185,8,.8); color: #fff;font-size: 0.8rem;text-align: center; position: absolute; bottom: 2rem;right: 0.3rem; line-height: 0.88rem;z-index: 33;font-weight: 200;-webkit-transform: translateZ(0);}
+.v-now{font-size: 0.36rem; display: block; width: 30px;height: 1rem; position:absolute; top: 0; right: 0; z-index: 66; text-align: center;line-height: 1rem;padding-right: 10px;}
+.v-now:before{ content: '\e622'; font-family:'iconfont'; color: #0bb908; font-weight: bold;}
+
+.addPep{width: 0.88rem; height: 0.88rem; border-radius: 0.88rem; background-color: rgba(11,185,8,.8); color: #fff;font-size: 0.8rem;text-align: center; position: absolute; bottom: 2rem;right: 0.3rem; line-height: 0.8rem;z-index: 33;font-weight: 200;-webkit-transform: translateZ(0);border-width: 3px;border-style: solid; border-color: rgba(11,185,8,.2);}
 </style>

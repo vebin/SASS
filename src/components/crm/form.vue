@@ -125,6 +125,8 @@ import XHR from '../../api/service'
                     json.provincesn = this.prov
                     json.citysn = this.city
                     json.address = this.levelTxt
+                    json.provincesn = this.prov
+                    json.citysn = this.city
                     json.remark = this.remark
                     XHR.editPop(json)
                     .then(function (res) {
@@ -135,14 +137,7 @@ import XHR from '../../api/service'
                                 self.back()
                             }, 400)
                         } else {
-                            setTimeout(() => {
-                                self.$dialog.loading.close()
-                                self.$dialog.toast({
-                                    mes: res.data.errmsg,
-                                    timeout: 2000,
-                                    icon: 'error'
-                                })
-                            }, 400)
+                            XHR.isErr(res,self)
                         }
                     })
                     .catch(function (err) {

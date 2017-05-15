@@ -95,7 +95,16 @@ input{height: 0.7rem;}
 }
 
 a {cursor: pointer;}
-
+.new-msg-dot {
+    position: absolute;
+    top: -3px;
+    right: -4px;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: red;
+}
 
 /* ----选择弹层展示---- */
 .fl-pop-box{
@@ -156,10 +165,13 @@ a {cursor: pointer;}
 
 .ms-g-ftbox{height: 1rem; line-height: 1rem; text-align: center; font-size: 0.3rem; font-weight: 500;}
 .ms-btns{background-color: #0bb908; color: #fff;}
-.ms-btn-bk{background-color: #949494;width: 2rem;}
+
+.ms-buy-msg{ font-size: 0.36rem;}
 .ms-btn-tt{background-color: #058e02;width: 2rem;}
 .ms-btn-red{background-color: #f96334;}
+.ms-btn-gue{background-color: #FF9800;}
 
+.ms-btn-bk{background-color: #949494;width: 2rem;}
 .ms-gx-lft{width: 0.7rem; font-family:"iconfont"; font-size: 0.4rem; color: #999;}
 
 .ms-cell-arrow{justify-content:space-between;}
@@ -190,7 +202,7 @@ a {cursor: pointer;}
 .m-confirm .confirm-hd,.m-confirm .confirm-bd{text-align: center;}
 body .m-notify{z-index: 9999;-webkit-transform: translateZ(0);background-color: rgba(244, 67, 54, 0.88); font-size: 0.28rem; font-weight: 500;}
 
-
+.bind-user{font-size: 0.28rem;color: #0037ff; height: 1rem;text-align: right;line-height: 1rem;}
 
 
 .parentheses {}

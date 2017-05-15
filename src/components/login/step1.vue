@@ -13,7 +13,7 @@
                     <div class="ms-g-item flex-wrap row-flex">
                         <div class="ms-g-lft">手机号</div>
                         <div class="page ms-g-rit">
-                            <input type="tel" class="page fr-input" placeholder="请输入手机号" v-model="tel"/>
+                            <input type="tel" class="page fr-input" placeholder="请输入手机号" v-model="tel" @focus="hideFoot" @blur="hideFoot"/>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="ms-g-item flex-wrap row-flex">
                         <div class="ms-g-lft">验证码</div>
                         <div class="page ms-g-rit">
-                            <input type="tel" class="page fr-input" placeholder="请输入验证码" v-model="code"/>
+                            <input type="tel" class="page fr-input" placeholder="请输入验证码" v-model="code" @focus="hideFoot" @blur="hideFoot"/>
                         </div>
                         <yd-sendcode slot="right" 
                             v-model="sendBtn" 
@@ -39,11 +39,12 @@
                     :disabled="!isNext"  
                     :type="isNext ? 'primary' : 'disabled'" 
                     @click.native="nextAC">下一步</yd-button>
+                <div class="bind-user" @click="jump('/m/app/login')">绑定已有帐号</div>
             </div>
         </div>
-        <div class="step-fooot flex-wrap row-flex">
-            <div class="wel-fooot">联系客服</div>
-            <div class="wel-fooot" @click="jump('/m/app/login')">绑定已有帐号</div>
+        <div v-if="isFoot" class="step-fooot flex-wrap row-flex">
+            <a href="tel:13041097429" class="wel-fooot">联系客服</a>
+            <a class="wel-fooot" href="http://a.xiumi.us/stage/v5/36Pll/41269030#/">使用帮助</a>
         </div>
     </div>
 </template>
@@ -52,6 +53,7 @@ import XHR from '../../api/service'
     export default {
         data() {
             return {
+                isFoot:true,
                 tel:'',
                 code:'',
                 sendBtn: false,
@@ -67,6 +69,9 @@ import XHR from '../../api/service'
             code: 'changCode'
         },
         methods: {
+            hideFoot(){
+                this.isFoot = !this.isFoot
+            },
             changTel(curVal,oldVal){
                 if(curVal.length == 11){
                     if(this.seek(curVal)){
@@ -107,13 +112,7 @@ import XHR from '../../api/service'
                         }, 400)
                     } else {
                         self.$dialog.loading.close()
-                        setTimeout(() => {
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {
@@ -136,14 +135,7 @@ import XHR from '../../api/service'
                             self.jump('/m/app/step2')
                         }, 400)
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                       XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {

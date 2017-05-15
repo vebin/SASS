@@ -8,12 +8,12 @@
                     <div class="step-item">审核</div>
                 </div>
             </div>
-            <div class="step-input-box PHT">
+            <div class="step-input-box">
                 <div class="ms-g-box">
                     <div class="ms-g-item flex-wrap row-flex">
-                        <div class="ms-g-lft"><i>*</i>真是姓名</div>
+                        <div class="ms-g-lft"><i>*</i>真实姓名</div>
                         <div class="page ms-g-rit">
-                            <input type="text" class="page fr-input" placeholder="与身份证一致" v-model="name"/>
+                            <input type="text" class="page fr-input" placeholder="与身份证一致" v-model="name" @focus="hideFoot" @blur="hideFoot"/>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="ms-g-item flex-wrap row-flex">
                         <div class="ms-g-lft"><i>*</i>身份证号</div>
                         <div class="page ms-g-rit">
-                            <input type="text" class="page fr-input" placeholder="与身份证一致" v-model="code"/>
+                            <input type="text" class="page fr-input" placeholder="与身份证一致" v-model="code" @focus="hideFoot" @blur="hideFoot"/>
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                 <div class="ms-g-box">
                     <div class="ms-g-item flex-wrap row-flex ms-g-nobor">
                         <div class="ms-g-lft">上传身份证</div>
-                        <div class="page flex-wrap col-flex PHT">
+                        <div class="page flex-wrap row-flex upImgs">
                             <img v-for="em in img"
                                 :src="em" class="pics"/>
                             <div v-if="isAdd" class="addPic" @click="addImage">上传图片</div>
@@ -47,11 +47,12 @@
                 :disabled="!saveBtn"  
                 :type="saveBtn ? 'primary' : 'disabled'" 
                 @click.native="saveAC">提交信息，等待审核</yd-button>
+                <div class="bind-user" @click="jump('/m/app/login')">绑定已有帐号</div>
             </div>
         </div>
-        <div class="step-fooot flex-wrap row-flex">
-            <div class="wel-fooot">联系客服</div>
-            <div class="wel-fooot" @click="jump('/m/app/login')">绑定已有帐号</div>
+        <div v-if="isFoot" class="step-fooot flex-wrap row-flex">
+            <a href="tel:13041097429" class="wel-fooot">联系客服</a>
+            <a class="wel-fooot" href="http://a.xiumi.us/stage/v5/36Pll/41269030#/">使用帮助</a>
         </div>
     </div>
 </template>
@@ -60,6 +61,7 @@ import XHR from '../../api/service'
     export default {
         data() {
             return {
+                isFoot:true,
                 name:'',
                 sallName:'',
                 code:'',
@@ -77,6 +79,9 @@ import XHR from '../../api/service'
             img: 'changCode'
         },
         methods: {
+            hideFoot(){
+                this.isFoot = !this.isFoot
+            },
             changCode(curVal,oldVal){
                 if(this.code.length > 18){
                     this.saveBtn = false
@@ -111,14 +116,7 @@ import XHR from '../../api/service'
                             self.jump({path:'/m/app/step3',query:{id:1}})
                         }, 400)
                     } else {
-                        setTimeout(() => {
-                            self.$dialog.loading.close()
-                            self.$dialog.toast({
-                                mes: res.data.errmsg,
-                                timeout: 2000,
-                                icon: 'error'
-                            })
-                        }, 400)
+                        XHR.isErr(res,self)
                     }
                 })
                 .catch(function (err) {
@@ -166,8 +164,10 @@ import XHR from '../../api/service'
     width: 100%;
     height: auto;
 }
-.addPic{font-size: 0.28rem; color: #333; width: 100%; height: 1rem; line-height: 0.9rem; background-color: #f5f5f5; border: 0.02rem dashed #ccc;  margin-top: 0.3rem; text-align: center;}
-.addPic:before{ content: '\e601'; font-family: 'iconfont'; font-size: 0.38rem; margin-right: 0.3rem; color: #ccc;}
-.pics{width: 100%; height: auto;}
+.addPic{font-size: 0.28rem; color: #333; width: 1.8rem; height: 1.8rem; line-height: 0.7rem; background-color: #f5f5f5; border: 0.02rem dashed #ccc; text-align: center;}
+.addPic:before{ content: '\e601'; font-family: 'iconfont'; font-size: 0.48rem; color: #ccc; display: block; height: 0.7rem; line-height: 0.7rem; margin-top: 0.2rem;}
+.pics{width: 1.8rem; height: 1.8rem;}
+.pics:nth-child(1){margin-right: 0.2rem;}
+.upImgs{}
 .step-fooot{ height: 1rem; line-height: 1rem;font-size: 0.28rem;color: #0037ff;justify-content:space-between; padding: 0 0.3rem;}
 </style>

@@ -18,12 +18,12 @@ function QueryStringByName(name){
 if (QueryStringByName('vc') && !DEBUG) {
   SEVC = QueryStringByName('vc')
 } else {
-  SEVC = 'veny8uhw8slt9rlds6zgit4v9v1t3qes'
+  SEVC = 'va2ejbbtl4ig58u7c9gwsjv575moa87m'
 }
 if (QueryStringByName('uc') && !DEBUG) {
   SEID = QueryStringByName('uc')
 } else {
-  SEID = 'bruvkj7ir9wfrpk91rv2f44yd9g2oshe'
+  SEID = 'va2ejbbtl4ig58u7c9gwsjv575moa87m'
 }
 
 
@@ -122,8 +122,36 @@ class XHR {
     json.uc = SEID
     return  axios.post(API.postClues(),qs.stringify(json),config)
   }
-
-
+// 最新售卖列表
+  soldList (json) {
+    json.uc = SEID
+    return  axios.get(API.soldList(),{params:json})
+  }
+// 新消息提醒
+  noticeHot (json) {
+    json.uc = SEID
+    return  axios.get(API.noticeHot(),{params:json})
+  }
+// 推荐线索列表
+  recommList (json) {
+    json.uc = SEID
+    return  axios.get(API.recommList(),{params:json})
+  }
+// 获取最后一条系统消息的主键id
+  sysmsgId (json) {
+    json.uc = SEID
+    return  axios.get(API.sysmsgId(),{params:json})
+  }
+// 系统消息列表
+  sysmsgList (json) {
+    json.uc = SEID
+    return  axios.get(API.sysmsgList(),{params:json})
+  }
+// 系统消息详情
+  sysmsgMsg (json) {
+    json.uc = SEID
+    return  axios.get(API.sysmsgMsg(),{params:json})
+  }
 
 // 获取卡豆列表
   getBeanList (json) {
@@ -162,16 +190,26 @@ class XHR {
     json.uc = SEID
     return  axios.get(API.payOrder(),{params:json})
   }
-  // isErr (res) {
-    // if (res.data.status === 0) {
-    //     alert(`${res.data.message}或者登录过期`)
-          // return window.location.href = `${DEV_URL}`
-          // return window.location.href = `${PRO_URL}`
-    // } else {
-    //   alert(res.data.message)
-    // }
-  // }
+// 获取最后一条系统消息
+  lastNot (json) {
+    json.uc = SEID
+    return  axios.get(API.lastNot(),{params:json})
+  }
   
+  isErr (res,self) {
+    if (res.data.errcode == '4001' || res.data.errcode == '4002' || res.data.errcode == '4003') {
+        self.jump({path:'/iserr',query:{err:res.data.errcode}})
+    }else{
+      setTimeout(() => {
+          self.$dialog.loading.close()
+          self.$dialog.toast({
+              mes: res.data.errmsg,
+              timeout: 2000,
+              icon: 'error'
+          })
+      }, 400)
+    }
+  }
 }
 
 // 实例化后再导出

@@ -3,7 +3,7 @@
 	<nav>
         <router-link to="/clue" tag="dl" exact>
             <dt class="ffm ico-xs">
-                <i class="new-msg-count" v-show="$store.state.newMsgCount">{{$store.state.newMsgCount}}</i>
+<!--                 <i class="new-msg-count" v-show="$store.state.newMsgCount">{{$store.state.newMsgCount}}</i> -->
             </dt>
             <dd>线索</dd>
         </router-link>
@@ -16,7 +16,7 @@
 
 		<router-link to="/self" tag="dl">
             <dt class="ffm ico-me">
-                <!-- <i class="new-msg-dot"></i> -->
+                <i class="new-msg-dot" v-show="$store.state.headerStatus"></i>
             </dt>
             <dd>我的</dd>
         </router-link>
